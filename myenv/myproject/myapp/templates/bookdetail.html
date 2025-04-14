@@ -1,0 +1,779 @@
+{% extends 'cheader.html'%}
+{% load static %}
+{% block content%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Rental Booking Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        /* Modern Font and Base Styles */
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #2563EB;
+            --primary-dark: #1E40AF;
+            --primary-light: #DBEAFE;
+            --secondary: #0EA5E9;
+            --accent: #F59E0B;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-400: #9CA3AF;
+            --gray-500: #6B7280;
+            --gray-600: #4B5563;
+            --gray-700: #374151;
+            --gray-800: #1F2937;
+            --gray-900: #111827;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --radius-sm: 0.375rem;
+            --radius: 0.5rem;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            padding: 0;
+            margin-bottom: 3rem;
+            height: 90vh;
+            min-height: 700px;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 100%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 2rem;
+            color: white;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .booking-id {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-xl);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Main Content */
+        .booking-card {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .car-header {
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .car-title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .car-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin: 0;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-xl);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-active {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .status-inactive {
+            background-color: var(--gray-400);
+            color: white;
+        }
+
+        /* Tabs */
+        .booking-tabs {
+            display: flex;
+            gap: 1rem;
+            padding: 0 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .tab {
+            padding: 1rem 0;
+            font-weight: 500;
+            color: var(--gray-600);
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        /* Car Details */
+        .car-details {
+            padding: 1.5rem;
+        }
+
+        .car-image {
+            width: 100%;
+            height: 300px;
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .car-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .car-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .specifications {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .spec-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background-color: var(--primary-light);
+            border-radius: var(--radius);
+            color: var(--primary);
+        }
+
+        .spec-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .spec-label {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+
+        .spec-value {
+            font-weight: 500;
+            color: var(--gray-800);
+        }
+
+        /* Booking Details */
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .booking-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .booking-item {
+            background-color: var(--gray-50);
+            padding: 1.25rem;
+            border-radius: var(--radius);
+            transition: all 0.2s ease;
+        }
+
+        .booking-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .booking-label {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            margin-bottom: 0.5rem;
+        }
+
+        .booking-value {
+            font-weight: 500;
+            color: var(--gray-800);
+            font-size: 1.125rem;
+        }
+
+        /* Location */
+        .location-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .location-item {
+            background-color: var(--gray-50);
+            padding: 1.25rem;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .location-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-light);
+            border-radius: var(--radius);
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .location-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .location-map {
+            height: 300px;
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .location-map iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Payment Summary */
+        .payment-summary {
+            background-color: var(--gray-50);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .payment-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .payment-label {
+            color: var(--gray-600);
+        }
+
+        .payment-value {
+            font-weight: 500;
+            color: var(--gray-800);
+        }
+
+        .payment-total {
+            display: flex;
+            justify-content: space-between;
+            padding: 1.25rem 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .total-label {
+            color: var(--gray-900);
+        }
+
+        .total-value {
+            color: var(--primary);
+        }
+
+        /* Actions */
+        .actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .btn-icon {
+            margin-right: 0.5rem;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .timeline:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 24px;
+            width: 2px;
+            background-color: var(--gray-200);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 1.5rem;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-icon {
+            position: absolute;
+            left: 0;
+            width: 48px;
+            height: 48px;
+            background-color: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            z-index: 1;
+        }
+
+        .timeline-content {
+            background-color: white;
+            padding: 1.25rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-date {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .car-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .booking-tabs {
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+            }
+            
+            .tab {
+                white-space: nowrap;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero-section" style="background-image: url('{{ booking.car.cimage.url }}');">
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="hero-content">
+                <span class="booking-id">Booking #{{ booking.id }}</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- Booking Status Card -->
+        <div class="booking-card fade-in">
+            <div class="car-header">
+                <div class="car-title-wrapper">
+                    <h2 class="car-title">{{ booking.car.cname }}</h2>
+                    {% if booking.payment_status and not booking.reject_status %}
+                        <span class="status-badge status-active">
+                            <i class="fas fa-check-circle"></i> Active
+                        </span>
+                    {% else %}
+                        <span class="status-badge status-inactive">
+                            <i class="fas fa-times-circle"></i> Inactive
+                        </span>
+                    {% endif %}
+                </div>
+                <div class="actions">
+                    <button class="btn btn-outline">
+                        <i class="fas fa-phone btn-icon"></i> Contact Support
+                    </button>
+                    {% if booking.payment_status and not booking.reject_status %}
+                    <button class="btn btn-primary">
+                        <a href="{% url 'download_invoice' booking.id %}" class="btn btn-primary">
+                        <i class="fas fa-file-download btn-icon"></i> Download Invoice
+                        </a>
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="booking-tabs">
+                <div class="tab active">Booking Details</div>
+                <div class="tab">Rental Policy</div>
+                <div class="tab">Support</div>
+            </div>
+
+            <div class="car-details">
+                <div class="specifications">
+                    <div class="spec-item">
+                        <div class="spec-icon">
+                            <i class="fas fa-gas-pump"></i>
+                        </div>
+                        <div class="spec-info">
+                            <span class="spec-label">Fuel Type</span>
+                            <span class="spec-value">{{ booking.car.sfuel }}</span>
+                        </div>
+                    </div>
+
+                    <div class="spec-item">
+                        <div class="spec-icon">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                        <div class="spec-info">
+                            <span class="spec-label">Transmission</span>
+                            <span class="spec-value">{{ booking.car.stransmission }}</span>
+                        </div>
+                    </div>
+
+                    <div class="spec-item">
+                        <div class="spec-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="spec-info">
+                            <span class="spec-label">Capacity</span>
+                            <span class="spec-value">{{ booking.car.seats }} Seats</span>
+                        </div>
+                    </div>
+
+                    <div class="spec-item">
+                        <div class="spec-icon">
+                            <i class="fas fa-road"></i>
+                        </div>
+                        <div class="spec-info">
+                            <span class="spec-label">Included</span>
+                            <span class="spec-value">300 kms</span>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="section-title">Booking Timeline</h3>
+                <div class="timeline">
+                    {% if booking.reject_status %}
+                    <div class="timeline-item">
+                        <div class="timeline-icon">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <h4 class="timeline-title">Booking Rejected</h4>
+                            <span class="timeline-date">Unavailable</span>
+                            <p>Sorry, your booking has been rejected. Payment Refund is in process.</p>
+                        </div>
+                    </div>
+                    {% elif booking.payment_status and not booking.status %}
+                    <div class="timeline-item">
+                        <div class="timeline-icon">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <h4 class="timeline-title">Booking Processing</h4>
+                            <span class="timeline-date">In Review</span>
+                            <p>Your Booking is currently being processed. We'll update you soon.</p>
+                        </div>
+                    </div>
+                    {% elif booking.status %}
+                    <div class="timeline-item">
+                        <div class="timeline-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div> 
+                        <div class="timeline-content">
+                            <h4 class="timeline-title">Booking Confirmed</h4>
+                            <span class="timeline-date">Confirmed</span>
+                            <p>Your car rental has been confirmed and is ready for pickup.</p>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if booking.payment_status and not booking.reject_status %}
+                    <div class="timeline-item">
+                        <div class="timeline-icon">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <h4 class="timeline-title">Pickup Date</h4>
+                            <span class="timeline-date">{{ booking.start_date|date:"d M Y" }} at {{ booking.pick_time }}</span>
+                            <p>Please arrive on time at the pickup location with your ID and payment card.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon">
+                            <i class="fas fa-flag-checkered"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <h4 class="timeline-title">Return Date</h4>
+                            <span class="timeline-date">{{ booking.end_date|date:"d M Y" }}</span>
+                            <p>Please return the vehicle with a full tank of fuel to avoid additional charges.</p>
+                        </div>
+                    </div>
+                </div>
+                
+
+                <h3 class="section-title">Rental Information</h3>
+                <div class="booking-info">
+                    <div class="booking-item">
+                        <div class="booking-label">Duration</div>
+                        <div class="booking-value">{{ booking.total_days }} Days</div>
+                    </div>
+                    <div class="booking-item">
+                        <div class="booking-label">Pickup Date</div>
+                        <div class="booking-value">{{ booking.start_date|date:"d M Y" }}</div>
+                    </div>
+                    <div class="booking-item">
+                        <div class="booking-label">Pickup Time</div>
+                        <div class="booking-value">{{ booking.pick_time }}</div>
+                    </div>
+                    <div class="booking-item">
+                        <div class="booking-label">Return Date</div>
+                        <div class="booking-value">{{ booking.end_date|date:"d M Y" }}</div>
+                    </div>
+                </div>
+
+                <h3 class="section-title">Pickup & Drop-off Location</h3>
+                <div class="location-grid">
+                    <div class="location-item">
+                        <div class="location-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="location-info">
+                            <span class="booking-label">Pickup Location</span>
+                            <span class="booking-value">{{ booking.pickup_address }}</span>
+                        </div>
+                    </div>
+                    <div class="location-item">
+                        <div class="location-icon">
+                            <i class="fas fa-flag"></i>
+                        </div>
+                        <div class="location-info">
+                            <span class="booking-label">Drop-off Location</span>
+                            <span class="booking-value">{{ booking.drop_address }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="location-map">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3505.2714827595546!2d77.21026507542168!3d28.52816779481616!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce1f202a12925%3A0xbef7feaeccf1a185!2sCar%20Rental%20Services!5e0!3m2!1sen!2sin!4v1679900996381!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+
+                <h3 class="section-title">Payment Summary</h3>
+                <div class="payment-summary">
+                    <div class="payment-item">
+                        <span class="payment-label">Base Rental ({{ booking.total_days }} days)</span>
+                        <span class="payment-value">₹ {{ booking.total_amount }}</span>
+                    </div>
+                    <div class="payment-item">
+                        <span class="payment-label">Insurance</span>
+                        <span class="payment-value">₹ {{ booking.insurance_fee }}</span>
+                    </div>
+                    <div class="payment-item">
+                        <span class="payment-label">Taxes & Fees</span>
+                        <span class="payment-value">₹ {{ booking.tax_amount }}</span>
+                    </div>
+                    <div class="payment-total">
+                        <span class="total-label">Total Amount</span>
+                        <span class="total-value">₹ {{ booking.total_amount }}</span>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-outline">
+                        <i class="fas fa-times-circle btn-icon"></i> Cancel Booking
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching functionality
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    // Add functionality to show different content based on tab selection
+                });
+            });
+
+            // Add animations to elements when they enter the viewport
+            const animateOnScroll = () => {
+                const elements = document.querySelectorAll('.booking-item, .spec-item, .timeline-item');
+                elements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const elementBottom = element.getBoundingClientRect().bottom;
+                    const isVisible = elementTop < window.innerHeight && elementBottom > 0;
+                    
+                    if (isVisible) {
+                        element.classList.add('fade-in');
+                    }
+                });
+            };
+
+            // Run on load
+            animateOnScroll();
+            
+            // Run on scroll
+            window.addEventListener('scroll', animateOnScroll);
+        });
+    </script>
+</body>
+</html>
+{% endblock %}

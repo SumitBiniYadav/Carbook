@@ -1,0 +1,421 @@
+{% extends 'cheader.html'%}
+{% load static %}
+{% block content%}
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<!-- Hero section -->
+<section class="hero-section position-relative vh-100 d-flex align-items-center" style="background-image: url('{% static 'images/rideim.jpg' %}'); background-size: cover; background-position: center;">
+  <div class="overlay position-absolute w-100 h-100" style="background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 100%);"></div>
+  <div class="container position-relative z-index-1">
+    <div class="row">
+      <div class="col-lg-7 col-md-10">
+        <h1 class="display-3 text-white fw-bold mb-4 animate__animated animate__fadeInUp">Discover Your Perfect Ride</h1>
+        <p class="lead text-white mb-5 animate__animated animate__fadeInUp animate__delay-1s">Browse our selection of premium vehicles and find the perfect match for your journey.</p>
+        <div class="d-flex flex-wrap gap-3 animate__animated animate__fadeInUp animate__delay-2s">
+          <a href="#car-list" class="btn btn-primary btn-lg px-4 py-3 rounded-pill fw-semibold">View Cars</a>
+          <a href="#" class="btn btn-outline-light btn-lg px-4 py-3 rounded-pill fw-semibold">Rent Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-indicator position-absolute bottom-0 start-50 translate-middle-x mb-4 animate__animated animate__fadeInUp animate__delay-3s">
+    <a href="#car-list" class="text-white">
+      <i class="bi bi-chevron-down fs-1"></i>
+    </a>
+  </div>
+</section>
+
+<!-- Car listing section with category filters -->
+<section id="car-list" class="py-5 bg-white">
+  <div class="container">
+    <!-- Section header -->
+    <div class="row mb-5">
+      <div class="col-12 text-center">
+        <h2 class="display-5 fw-bold text-primary mb-3">Premium Fleet</h2>
+        <div class="d-flex justify-content-center">
+          <div class="divider bg-primary" style="height: 4px; width: 60px;"></div>
+        </div>
+        <p class="text-muted mt-3 fs-5 max-w-md mx-auto">Select from our curated collection of luxury and performance vehicles</p>
+        
+        <!-- Search bar addition -->
+        <div class="mt-4 mb-3">
+          <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+              <form class="search-form" method = "GET" action="{% url 'car' %}">
+                <div class="input-group">
+                  <input type="text" class="form-control form-control-lg rounded-pill-start" placeholder="Search vehicles..." aria-label="Search vehicles" value="{{request.GET.q}}" name="q">
+                  <button class="btn btn-primary px-4 rounded-pill-end" type="submit">
+                    <i class="bi bi-search"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <!-- Car cards with style matching the design in Image 1 -->
+    <div class="row g-4">
+      {% for i in car %}
+      <div class="col-lg-4 col-md-6">
+        <div class="card border-0 h-100 shadow-sm hover-scale transition-300" style="border-radius: 16px; overflow: hidden;">
+          <!-- Image container -->
+          <div class="position-relative">
+            <img src="{{i.cimage.url}}" class="card-img-top" alt="{{i.cname}}" style="height: 240px; object-fit: cover;">
+          </div>
+          
+          <div class="card-body p-4">
+            <!-- Price tag positioned above the car name -->
+            <div class="mb-2">
+              <span class="badge bg-primary px-3 py-2 fs-6 fw-bold price-tag">
+                ₹{{i.dprice}} <small class="opacity-75">/day</small>
+              </span>
+            </div>
+            
+            <h3 class="h4 fw-bold mb-3">{{i.cname}}</h3>
+            
+            <!-- Car specs with icons matching the design -->
+             <div class="car-specs mb-3">
+              <div class="d-flex align-items-center justify-content-center mb-4">
+                <div class="spec-item mx-3">
+                  <i class="bi bi-fuel-pump text-muted me-2"></i>
+                  <span class="text-muted">Premium</span>
+                </div>
+                <div class="spec-item mx-3">
+                  <i class="bi bi-gear text-muted me-2"></i>
+                  <span class="text-muted">Auto</span>
+                </div>
+                <div class="spec-item mx-3">
+                  <i class="bi bi-people text-muted me-2"></i>
+                  <span class="text-muted">4 Seats</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Buttons styled to match the design -->
+            <div class="d-flex gap-2">
+              <a href="{% url 'idetails' pk=i.pk %}" class="btn btn-outline-primary rounded-pill py-2 flex-grow-1">View Details</a>
+              <a href="{% url 'cart' pk=i.pk %}" class="btn btn-primary rounded-pill py-2 flex-grow-1">Book Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    
+    <!-- Pagination -->
+<div class="row mt-5">
+  <div class="col-12 d-flex justify-content-center">
+    <nav aria-label="Page navigation">
+      <ul class="pagination">
+        {% if car.has_previous %}
+          <li class="page-item">
+            <a class="page-link rounded-circle mx-1" href="?page={{ car.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" aria-label="Previous">
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          </li>
+        {% else %}
+          <li class="page-item disabled">
+            <a class="page-link rounded-circle mx-1" href="#" aria-label="Previous">
+              <i class="bi bi-chevron-left"></i>
+            </a>
+          </li>
+        {% endif %}
+        
+        {% for i in car.paginator.page_range %}
+          {% if car.number == i %}
+            <li class="page-item active">
+              <a class="page-link rounded-circle mx-1" href="#">{{ i }}</a>
+            </li>
+          {% else %}
+            <li class="page-item">
+              <a class="page-link rounded-circle mx-1" href="?page={{ i }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ i }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+        
+        {% if car.has_next %}
+          <li class="page-item">
+            <a class="page-link rounded-circle mx-1" href="?page={{ car.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" aria-label="Next">
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          </li>
+        {% else %}
+          <li class="page-item disabled">
+            <a class="page-link rounded-circle mx-1" href="#" aria-label="Next">
+              <i class="bi bi-chevron-right"></i>
+            </a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<!-- Call to action section matching the design in Image 2 -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-8 col-md-7 text-center text-md-start">
+        <h2 class="display-6 fw-bold mb-2 text-dark">Ready for your next adventure?</h2>
+        <p class="lead text-muted mb-0">Experience the thrill of driving premium vehicles with our special rates.</p>
+      </div>
+      <div class="col-lg-4 col-md-5 text-center text-md-end mt-4 mt-md-0">
+        <a href="#" class="btn btn-primary btn-lg rounded-pill px-4 py-3">Book Your Ride</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Benefits section with larger icons matching the design in Image 2 -->
+<section class="py-5 bg-white">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="text-center p-4 h-100 benefit-card">
+          <!-- Larger icon circle with icon above text -->
+          <div class="icon-circle-large bg-light mb-4 mx-auto">
+            <i class="bi bi-shield-check text-primary"></i>
+          </div>
+          <h3 class="h4 fw-bold">Fully Insured</h3>
+          <p class="text-muted">All our vehicles come with comprehensive insurance coverage for your peace of mind.</p>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="text-center p-4 h-100 benefit-card">
+          <div class="icon-circle-large bg-light mb-4 mx-auto">
+            <i class="bi bi-car-front text-primary"></i>
+          </div>
+          <h3 class="h4 fw-bold">Premium Vehicles</h3>
+          <p class="text-muted">Our fleet consists of only the finest vehicles, maintained to the highest standards.</p>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="text-center p-4 h-100 benefit-card">
+          <div class="icon-circle-large bg-light mb-4 mx-auto">
+            <i class="bi bi-headset text-primary"></i>
+          </div>
+          <h3 class="h4 fw-bold">24/7 Support</h3>
+          <p class="text-muted">Our customer support team is available around the clock to assist with any inquiries.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Add Bootstrap Icons link -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<!-- Add custom styles -->
+<style>
+  /* Hover effect for cards */
+  .hover-scale {
+    transform: translateY(0);
+    transition: all 0.3s ease;
+  }
+
+  /* Page load transition */
+  body {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  
+  .car-specs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hover-scale:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+  
+  .transition-300 {
+    transition: all 0.3s ease;
+  }
+  
+  /* Price tag styling */
+  .price-tag {
+    font-size: 1rem;
+    border-radius: 50px;
+    padding: 6px 12px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    color: white !important; /* Change text color to white */
+  }
+  
+  /* Larger icon circles for benefits section */
+  .icon-circle-large {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    margin: 0 auto;
+  }
+  
+  .icon-circle-large i {
+    font-size: 2.5rem;
+  }
+  
+  /* Divider styling */
+  .divider {
+    border-radius: 4px;
+    margin: 0 auto;
+  }
+  
+  /* Benefit card styling */
+  .benefit-card {
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+  
+  .benefit-card:hover {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
+  
+  /* Pagination styling */
+  .pagination .page-link {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+  .pagination .page-item.active .page-link {
+    background-color: var(--bs-primary);
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 767px) {
+    .icon-circle-large {
+      width: 80px;
+      height: 80px;
+    }
+    
+    .icon-circle-large i {
+      font-size: 2rem;
+    }
+  }
+  
+  /* Car spec items */
+  .spec-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.8rem;
+    gap: 6px;
+  }
+
+  .spec-item i {
+    font-size: 1.1rem;
+    gap: 10px;
+  }
+  
+  /* Make the "Book Now" button stand out */
+  .btn-primary {
+    box-shadow: 0 4px 10px rgba(13, 110, 253, 0.2);
+  }
+  
+  .btn-primary:hover {
+    box-shadow: 0 6px 15px rgba(13, 110, 253, 0.3);
+  }
+  
+  /* Search bar styling */
+  .search-form .form-control {
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    border-right: none;
+    padding-left: 20px;
+    height: 54px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+  
+  .search-form .btn {
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+    border-left: none;
+    padding-right: 25px;
+    padding-left: 25px;
+    height: 54px;
+  }
+  
+  .search-form .form-control:focus {
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+    border-color: #dee2e6;
+  }
+  
+  .rounded-pill-start {
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+  }
+  
+  .rounded-pill-end {
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+  }
+
+  /* Enhanced card loading transition */
+  .col-lg-4.col-md-6 {
+    opacity: 0;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  
+  /* Optional: Add a subtle scale effect on hover during load */
+  .hover-scale {
+    transition: 
+      opacity 0.6s ease, 
+      transform 0.6s ease, 
+      box-shadow 0.3s ease,
+      scale 0.3s ease;
+  }
+  
+  .hover-scale:hover {
+    scale: 1.03; /* Slight scale up on hover */
+    box-shadow: 0 15px 25px rgba(0,0,0,0.15);
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Fade in the body
+    document.body.style.opacity = 1;
+    
+    // Select all car cards
+    const carCards = document.querySelectorAll('.col-lg-4.col-md-6');
+    
+    // Add staggered animation to car cards
+    carCards.forEach((card, index) => {
+      card.style.opacity = 0;
+      card.style.transform = 'translateY(20px)';
+      
+      // Delay each card's appearance based on its index
+      setTimeout(() => {
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        card.style.opacity = 1;
+        card.style.transform = 'translateY(0)';
+      }, index * 200); // 200ms delay between each card
+    });
+  });
+  document.addEventListener("DOMContentLoaded", function() {
+    document.body.style.opacity = 1;
+  });
+</script>
+
+
+</body>
+</html>
+{% endblock %}

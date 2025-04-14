@@ -1,0 +1,382 @@
+{% extends 'header.html'%}
+{% load static %}
+{% block content%}
+
+<!DOCTYPE html>
+<html lang="en">
+    
+    <!-- Hero Section with Parallax and Modern Overlay -->
+    <section class="hero-section position-relative vh-100 d-flex align-items-center" style="background-image: url('{% static 'images/rideim.jpg' %}'); background-size: cover; background-position: center;">
+		<div class="overlay position-absolute w-100 h-100" style="background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%);"></div>
+		<div class="container position-relative z-index-1">
+		  <div class="row">
+			<div class="col-lg-7 col-md-10">
+			  
+			  <h1 class="display-3 text-white fw-bold mb-4 animate__animated animate__fadeInUp">Our Premium Services</h1>
+			  <p class="lead text-white mb-5 animate__animated animate__fadeInUp animate__delay-1s">Discover our comprehensive range of luxury transportation solutions tailored to your every need.</p>
+			  <div class="d-flex flex-wrap gap-3 animate__animated animate__fadeInUp animate__delay-2s">
+				<a href="{% url 'services' %}" class="btn btn-primary btn-lg px-4 py-3 rounded-pill fw-semibold">View Services</a>
+				<a href="{% url 'about' %}" class="btn btn-outline-light btn-lg px-4 py-3 rounded-pill fw-semibold">Contact Us</a>
+			  </div>
+			</div>
+		  </div>
+		</div>
+		<div class="scroll-indicator position-absolute bottom-0 start-50 translate-middle-x mb-4 animate__animated animate__fadeInUp animate__delay-3s">
+		  <a href="#services" class="text-white">
+			<i class="fas fa-chevron-down fa-2x"></i>
+		  </a>
+		</div>
+	  </section>
+
+    <!-- Services Section with Cards -->
+    <section class="ftco-section bg-light py-5">
+		<div class="container py-4">
+		  <div class="row justify-content-center mb-5">
+			<div class="col-md-8 text-center">
+			  <span class="subheading text-primary font-weight-bold">WHAT WE OFFER</span>
+			  <h2 class="mb-4 display-5">Our Premium Services</h2>
+			  <p class="lead text-muted">Choose from our range of premium services tailored to meet your transportation needs</p>
+			</div>
+		  </div>
+		  
+		  <div class="row">
+			<!-- Wedding Ceremony -->
+			<div class="col-lg-3 col-md-6 mb-4">
+			  <div class="card h-100 shadow-sm border-0 rounded-lg hover-effect">
+				<div class="service-icon">
+				  <div class="icon-circle">
+					<i class="fas fa-heart fa-3x text-primary"></i>
+				  </div>
+				</div>
+				<div class="card-body text-center">
+				  <h3 class="h4 mb-3">Wedding Ceremony</h3>
+				  <p class="card-text">Arrive in style on your special day with our luxury car rental service. Make a grand entrance and enjoy a smooth, comfortable ride throughout your wedding celebrations.</p>
+				</div>
+				<div class="card-footer bg-transparent border-0 text-center">
+				  <a href="#" class="btn btn-outline-primary">Learn More</a>
+				</div>
+			  </div>
+			</div>
+			
+			<!-- City Transfer -->
+			<div class="col-lg-3 col-md-6 mb-4">
+			  <div class="card h-100 shadow-sm border-0 rounded-lg hover-effect">
+				<div class="service-icon">
+				  <div class="icon-circle">
+					<i class="fas fa-building fa-3x text-primary"></i>
+				  </div>
+				</div>
+				<div class="card-body text-center">
+				  <h3 class="h4 mb-3">City Transfer</h3>
+				  <p class="card-text">Need a quick, reliable ride across the city? Our service offers well-maintained, comfortable cars driven by professional chauffeurs.</p>
+				</div>
+				<div class="card-footer bg-transparent border-0 text-center">
+				  <a href="#" class="btn btn-outline-primary">Learn More</a>
+				</div>
+			  </div>
+			</div>
+			
+			<!-- Airport Transfer -->
+			<div class="col-lg-3 col-md-6 mb-4">
+			  <div class="card h-100 shadow-sm border-0 rounded-lg hover-effect">
+				<div class="service-icon">
+				  <div class="icon-circle">
+					<i class="fas fa-plane-arrival fa-3x text-primary"></i>
+				  </div>
+				</div>
+				<div class="card-body text-center">
+				  <h3 class="h4 mb-3">Airport Transfer</h3>
+				  <p class="card-text">Start or end your journey stress-free with our airport transfer service. We provide punctual pickups and drop-offs with luxury vehicles.</p>
+				</div>
+				<div class="card-footer bg-transparent border-0 text-center">
+				  <a href="#" class="btn btn-outline-primary">Learn More</a>
+				</div>
+			  </div>
+			</div>
+			
+			<!-- Whole City Tour -->
+			<div class="col-lg-3 col-md-6 mb-4">
+			  <div class="card h-100 shadow-sm border-0 rounded-lg hover-effect">
+				<div class="service-icon">
+				  <div class="icon-circle">
+					<i class="fas fa-map-marked-alt fa-3x text-primary"></i>
+				  </div>
+				</div>
+				<div class="card-body text-center">
+				  <h3 class="h4 mb-3">City Tour</h3>
+				  <p class="card-text">Explore the city like never before! Visit top landmarks and hidden gems in total comfort with experienced drivers who know the best routes.</p>
+				</div>
+				<div class="card-footer bg-transparent border-0 text-center">
+				  <a href="#" class="btn btn-outline-primary">Learn More</a>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </section>
+	  
+	  <!-- Features Section -->
+	  <section class="ftco-section bg-white py-5">
+		<div class="container py-4">
+		  <div class="row justify-content-center mb-5">
+			<div class="col-md-8 text-center">
+			  <span class="subheading text-primary font-weight-bold">WHY CHOOSE US</span>
+			  <h2 class="mb-4 display-5">Service Excellence</h2>
+			</div>
+		  </div>
+		  
+		  <div class="row">
+			<div class="col-md-4 mb-4">
+			  <div class="feature-box text-center p-4">
+				<div class="icon-box mb-4">
+				  <i class="fas fa-car-alt fa-3x text-primary"></i>
+				</div>
+				<h3 class="h5 mb-3">Premium Fleet</h3>
+				<p>Our fleet consists of latest model luxury vehicles, meticulously maintained for your comfort and safety.</p>
+			  </div>
+			</div>
+			
+			<div class="col-md-4 mb-4">
+			  <div class="feature-box text-center p-4">
+				<div class="icon-box mb-4">
+				  <i class="fas fa-user-tie fa-3x text-primary"></i>
+				</div>
+				<h3 class="h5 mb-3">Professional Drivers</h3>
+				<p>Our chauffeurs are carefully selected, trained professionals who prioritize your safety and comfort.</p>
+			  </div>
+			</div>
+			
+			<div class="col-md-4 mb-4">
+			  <div class="feature-box text-center p-4">
+				<div class="icon-box mb-4">
+				  <i class="fas fa-clock fa-3x text-primary"></i>
+				</div>
+				<h3 class="h5 mb-3">24/7 Availability</h3>
+				<p>Our services are available round-the-clock, ensuring you have transportation whenever you need it.</p>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </section>
+	  
+	  <!-- Driver CTA Section with Modern Gradient -->
+	  <section class="ftco-section py-5" style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url({% static 'images/listcarr.jpg' %}); background-size: cover; background-position: center;">
+		<div class="container py-5">
+		  <div class="row justify-content-center">
+			<div class="col-md-8 text-center">
+			  <h2 class="mb-4 text-white display-5">Join Our Team of Professional Drivers</h2>
+			  <p class="lead text-white mb-4">Become a part of our growing family and enjoy flexible hours, competitive pay, and a supportive work environment.</p>
+			  <a href="{% url 'lindex'%}" class="btn btn-primary btn-lg px-5 py-3">Apply Now</a>
+			</div>
+		  </div>
+		</div>
+	  </section>
+	  
+	  <!-- Testimonials Section -->
+	  <section class="ftco-section bg-light py-5">
+		<div class="container py-4">
+		  <div class="row justify-content-center mb-5">
+			<div class="col-md-8 text-center">
+			  <span class="subheading text-primary font-weight-bold">TESTIMONIALS</span>
+			  <h2 class="mb-4 display-5">What Our Clients Say</h2>
+			</div>
+		  </div>
+		  
+		  <div class="row">
+			<div class="col-md-4 mb-4">
+			  <div class="card border-0 shadow-sm h-100">
+				<div class="card-body p-4">
+				  <div class="d-flex align-items-center mb-3">
+					<div class="testimonial-rating text-warning">
+					  <i class="fas fa-star"></i>
+					  <i class="fas fa-star"></i>
+					  <i class="fas fa-star"></i>
+					  <i class="fas fa-star"></i>
+					  <i class="fas fa-star"></i>
+					</div>
+				  </div>
+				  <p class="card-text">"The wedding car service was absolutely perfect. The vehicle was immaculate, and the driver was professional and courteous. Highly recommended!"</p>
+				  <div class="d-flex align-items-center mt-3">
+					<div class="testimonial-author">
+					  <h5 class="mb-0">Sarah Johnson</h5>
+					  <small class="text-muted">Wedding Client</small>
+					</div>
+				  </div>
+				</div>
+			  </div>
+			</div>
+			
+			<div class="col-md-4 mb-4">
+			  <div class="card border-0 shadow-sm h-100">
+				<div class="card-body p-4">
+				  <div class="d-flex align-items-center mb-3">
+					<div class="testimonial-rating text-warning">
+					  <i class="fas fa-star"></i>
+					  <i class="fas fa-star"></i>
+					  <i class="fas fa-star"></i>
+					  <i class="fas fa-star"></i>
+					  <i class="fas fa-star"></i>
+					</div>
+				  </div>
+				  <p class="card-text">"I use their airport transfer service regularly for business trips. Always on time, clean vehicles, and professional drivers. Makes travel so much easier."</p>
+				  <div class="d-flex align-items-center mt-3">
+					<div class="testimonial-author">
+					  <h5 class="mb-0">Michael Davis</h5>
+					  <small class="text-muted">Business Traveler</small>
+					</div>
+				  </div>
+				</div>
+			  </div>
+			</div>
+			
+			<div class="col-md-4 mb-4">
+			  <div class="card border-0 shadow-sm h-100">
+				<div class="card-body p-4">
+				  <div class="d-flex align-items-center mb-3">
+					<div class="testimonial-rating text-warning">
+					  <i class="fas fa-star"></i>
+					  <i class="fas fa-star"></i>
+					  <i class="fas fa-star"></i>
+					  <i class="fas fa-star"></i>
+					  <i class="fas fa-star-half-alt"></i>
+					</div>
+				  </div>
+				  <p class="card-text">"The city tour was fantastic! Our driver was knowledgeable about the history and culture of each location we visited. It made our vacation truly memorable."</p>
+				  <div class="d-flex align-items-center mt-3">
+					<div class="testimonial-author">
+					  <h5 class="mb-0">Emily & Robert</h5>
+					  <small class="text-muted">Tourist Couple</small>
+					</div>
+				  </div>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </section>
+	  
+	  <!-- Call to Action for Booking -->
+	  <section class="ftco-section bg-primary py-5">
+		<div class="container py-4">
+		  <div class="row justify-content-center">
+			<div class="col-md-8 text-center">
+			  <h2 class="mb-4 text-white">Ready to Experience Our Premium Services?</h2>
+			  <p class="lead text-white mb-4">Book your ride now and enjoy the comfort, luxury, and reliability of our premium car services.</p>
+			  <a href="{% url 'car'%}" class="btn btn-light btn-lg px-5 py-3 font-weight-bold">Book Now</a>
+			</div>
+		  </div>
+		</div>
+	  </section>
+	  
+	  <!-- Include FontAwesome -->
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+	  
+	  <!-- Custom JS for hover effects -->
+	  <script>
+		document.addEventListener('DOMContentLoaded', function() {
+		  // Add hover effect to service cards
+		  const cards = document.querySelectorAll('.hover-effect');
+		  cards.forEach(card => {
+			card.addEventListener('mouseenter', function() {
+			  this.classList.add('shadow');
+			  this.style.transform = 'translateY(-5px)';
+			  this.style.transition = 'all 0.3s ease';
+			});
+			
+			card.addEventListener('mouseleave', function() {
+			  this.classList.remove('shadow');
+			  this.style.transform = 'translateY(0)';
+			});
+		  });
+		});
+	  </script>
+	  
+	  <style>
+		/* Custom styles */
+		.hover-effect {
+		  transition: all 0.3s ease;
+		}
+		
+		.service-icon {
+		  height: 120px;
+		  display: flex;
+		  align-items: center;
+		  justify-content: center;
+		  margin-top: 20px;
+		}
+		
+		.icon-circle {
+		  height: 100px;
+		  width: 100px;
+		  border-radius: 50%;
+		  background-color: rgba(0, 123, 255, 0.1);
+		  display: flex;
+		  align-items: center;
+		  justify-content: center;
+		}
+		
+		.icon-box {
+		  height: 100px;
+		  width: 100px;
+		  border-radius: 50%;
+		  background-color: rgba(0, 123, 255, 0.1);
+		  display: flex;
+		  align-items: center;
+		  justify-content: center;
+		  margin: 0 auto;
+		}
+		
+		.breadcrumb {
+		  background: transparent !important;
+		}
+		
+		.breadcrumb-item + .breadcrumb-item::before {
+		  color: white;
+		}
+		
+		.subheading {
+		  letter-spacing: 2px;
+		  font-size: 14px;
+		  font-weight: 600;
+		  text-transform: uppercase;
+		  display: block;
+		  margin-bottom: 10px;
+		}
+		
+		.btn-primary {
+		  border-radius: 30px;
+		  padding: 10px 25px;
+		  font-weight: 600;
+		  transition: all 0.3s ease;
+		}
+		
+		.btn-outline-primary {
+		  border-radius: 30px;
+		  padding: 8px 20px;
+		  font-weight: 500;
+		  transition: all 0.3s ease;
+		}
+		
+		.btn-primary:hover, .btn-outline-primary:hover {
+		  transform: translateY(-2px);
+		  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+		}
+		
+		.card {
+		  border-radius: 10px;
+		  overflow: hidden;
+		}
+		
+		.feature-box {
+		  border-radius: 10px;
+		  transition: all 0.3s ease;
+		}
+		
+		.feature-box:hover {
+		  background-color: rgba(0, 123, 255, 0.05);
+		  transform: translateY(-5px);
+		}
+	  </style>
+	</body>
+  </html>
+  {% endblock %}

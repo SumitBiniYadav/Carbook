@@ -1,0 +1,130 @@
+{% extends 'lheader.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section with Full-Screen Background Image for Lessors -->
+<section class="hero-section position-relative vh-100 d-flex align-items-center" style="background-image: url('{% static 'images/carimage.jpg' %}'); background-size: cover; background-position: center;">
+    <div class="overlay position-absolute w-100 h-100" style="background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%);"></div>
+    <div class="container position-relative z-index-1">
+      <div class="row">
+        <div class="col-lg-7 col-md-10">
+          
+          <h1 class="display-3 text-white fw-bold mb-4 animate__animated animate__fadeInUp">Turn Your Car into a Source of Income</h1>
+          <p class="lead text-white mb-5 animate__animated animate__fadeInUp animate__delay-1s">Join our platform and start earning by renting out your vehicle effortlessly and securely.</p>
+          <div class="d-flex flex-wrap gap-3 animate__animated animate__fadeInUp animate__delay-2s">
+            <a href="{% url 'add'%}" class="btn btn-primary btn-lg px-4 py-3 rounded-pill fw-semibold">List Your Car</a>
+            <a href="{% url 'labout'%}" class="btn btn-outline-light btn-lg px-4 py-3 rounded-pill fw-semibold">Learn More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-indicator position-absolute bottom-0 start-50 translate-middle-x mb-4 animate__animated animate__fadeInUp animate__delay-3s">
+      <a href="#benefits" class="text-white">
+        <i class="fas fa-chevron-down fa-2x"></i>
+      </a>
+    </div>
+  </section>
+
+  <div class="container mx-auto p-4 space-y-4">
+    <div class="card">
+        <div class="card-header bg-gradient-to-r from-indigo-600 to-purple-600">
+            <h2 class="card-title text-black text-2xl font-bold">Earnings Dashboard</h2>
+        </div>
+        <div class="card-body grid md:grid-cols-4 gap-4">
+            <div class="bg-gradient-to-br from-emerald-100 to-emerald-200 p-4 rounded-lg shadow-md">
+                <h3 class="text-sm text-emerald-800 font-semibold">Total Earnings</h3>
+                <p class="text-4xl font-extrabold text-emerald-600 bg-white bg-opacity-50 rounded-lg p-2 text-center shadow-lg animate-pulse">
+                    ₹{{ total_earnings|floatformat:2 }}
+                </p>
+            </div>
+            <div class="bg-gradient-to-br from-sky-100 to-sky-200 p-4 rounded-lg shadow-md">
+                <h3 class="text-sm text-sky-800 font-semibold">Total Rentals</h3>
+                <p class="text-4xl font-extrabold text-sky-600 bg-white bg-opacity-50 rounded-lg p-2 text-center shadow-lg">
+                    {{ total_rentals }}
+                </p>
+            </div>
+            <div class="bg-gradient-to-br from-fuchsia-100 to-fuchsia-200 p-4 rounded-lg shadow-md">
+                <h3 class="text-sm text-fuchsia-800 font-semibold">Avg. Rental Duration</h3>
+                <p class="text-4xl font-extrabold text-fuchsia-600 bg-white bg-opacity-50 rounded-lg p-2 text-center shadow-lg">
+                    {{ avg_duration }} days
+                </p>
+            </div>
+            <div class="bg-gradient-to-br from-amber-100 to-amber-200 p-4 rounded-lg shadow-md">
+                <h3 class="text-sm text-amber-800 font-semibold">Utilization Rate</h3>
+                <p class="text-4xl font-extrabold text-amber-600 bg-white bg-opacity-50 rounded-lg p-2 text-center shadow-lg">
+                    {{ utilization_rate }}%
+                </p>
+            </div>
+        </div>
+        <div class="card-footer flex justify-between items-center">
+            <form method="GET" class="flex items-center space-x-2">
+                <input 
+                    type="date" 
+                    name="start_date"
+                    value="{{ start_date|date:'Y-m-d' }}"
+                    class="border rounded p-2"
+                />
+                <span>to</span>
+                <input 
+                    type="date" 
+                    name="end_date"
+                    value="{{ end_date|date:'Y-m-d' }}"
+                    class="border rounded p-2"
+                />
+                <button type="submit" class="btn btn-outline">Filter</button>
+            </form>
+            <div class="flex space-x-2">
+                <a href="#" class="btn btn-outline">
+                    Export
+                </a>
+                <a href="#" class="btn btn-outline">
+                    Refresh
+                </a>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <!-- Selected Car Details (dynamically loaded) -->
+    <div id="carDetailsContainer"></div>
+
+    <!-- Payment History -->
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">Payment History</h2>
+        </div>
+        <div class="card-body">
+            <table class="w-full">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="p-2 text-left">Date</th>
+                        <th class="p-2 text-right">Amount</th>
+                        <th class="p-2 text-left">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment in payment_history %}
+                    <tr>
+                        <td class="p-2">{{ payment.date }}</td>
+                        <td class="p-2 text-right">₹{{ payment.amount|floatformat:2 }}</td>
+                        <td class="p-2">{{ payment.status }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for dynamic car details -->
+<script>
+function showCarDetails(carId) {
+    fetch(`/car-details/${carId}/`)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('carDetailsContainer').innerHTML = html;
+        });
+}
+</script>
+{% endblock %}

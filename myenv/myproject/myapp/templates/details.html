@@ -1,0 +1,714 @@
+{% extends 'lheader.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+	:root {
+		--primary: #0091ff; 
+		--primary-dark: #007de0; 
+		--secondary: #2d3748;
+		--light: #f7fafc;
+		--gray: #718096;
+		--shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+		--transition: all 0.3s ease;
+	}
+      
+      body {
+        font-family: 'Poppins', sans-serif;
+        color: var(--secondary);
+        line-height: 1.6;
+      }
+      
+      .hero-section {
+        position: relative;
+        height: 90vh;
+        display: flex;
+        align-items: flex-end;
+        overflow: hidden;
+      }
+      
+      .hero-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+      }
+      
+      .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%);
+        z-index: -1;
+      }
+      
+      .hero-content {
+        padding: 2rem;
+        color: white;
+        width: 100%;
+      }
+      
+      .breadcrumb {
+		display: flex;
+		align-items: center; /* Align items properly */
+		margin-bottom: 1rem;
+		background: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+		padding: 8px 12px;
+		border-radius: 5px;
+	}
+	
+	.breadcrumb a {
+		color: #f8f9fa; /* Off-white for better contrast */
+		text-decoration: none;
+		margin-right: 0.5rem;
+		font-weight: bold;
+		text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Stronger shadow for contrast */
+	}
+	
+	/* Style for arrows */
+	.breadcrumb i {
+		color: #f8f9fa;
+		margin: 0 5px; /* Adjust margin for alignment */
+		font-size: 0.9rem; /* Reduce size slightly for better alignment */
+	}
+	
+      
+      .car-main {
+        margin-top: -4rem;
+        position: relative;
+        z-index: 10;
+      }
+      
+      .car-info-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: var(--shadow);
+        padding: 2rem;
+        margin-bottom: 2rem;
+      }
+      
+      .car-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+      }
+      
+      .car-name {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 0;
+      }
+      
+      .car-brand {
+        color: var(--primary);
+        text-transform: uppercase;
+        font-weight: 600;
+        letter-spacing: 1px;
+        font-size: 1rem;
+      }
+      
+      .spec-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+      
+      .spec-item {
+        text-align: center;
+      }
+      
+      .spec-icon {
+        font-size: 1.8rem;
+        color: var(--primary);
+        margin-bottom: 0.5rem;
+      }
+      
+      .spec-title {
+        font-size: 0.9rem;
+        color: var(--gray);
+        margin: 0;
+      }
+      
+      .spec-value {
+        font-size: 1.1rem;
+        font-weight: 600;
+      }
+      
+      .price-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin: 2.5rem 0;
+      }
+      
+      .price-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: var(--shadow);
+        padding: 1.5rem;
+        text-align: center;
+        transition: var(--transition);
+        border: 2px solid transparent;
+      }
+      
+      .price-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--primary);
+      }
+      
+      .price-type {
+        font-size: 1.2rem;
+        color: var(--gray);
+        margin-bottom: 0.5rem;
+      }
+      
+      .price-amount {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary);
+      }
+      
+      .tab-container {
+        margin: 3rem 0;
+      }
+      
+      .tab-nav {
+        display: flex;
+        border-bottom: 2px solid #edf2f7;
+        margin-bottom: 2rem;
+        overflow-x: auto;
+      }
+      
+      .tab-btn {
+        padding: 1rem 1.5rem;
+        font-weight: 600;
+        color: var(--gray);
+        cursor: pointer;
+        border-bottom: 3px solid transparent;
+        margin-right: 1rem;
+        white-space: nowrap;
+      }
+      
+      .tab-btn.active {
+        color: var(--primary);
+        border-bottom-color: var(--primary);
+      }
+      
+      .tab-content {
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      
+      .tab-content.active {
+        display: block;
+        opacity: 1;
+      }
+      
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1.5rem;
+      }
+      
+      .feature-item {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem;
+        border-radius: 8px;
+        background-color: #f8fafc;
+      }
+      
+      .feature-icon {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        margin-right: 1rem;
+      }
+      
+      .check-icon {
+        background-color: rgba(72, 187, 120, 0.1);
+        color: #48bb78;
+      }
+      
+      .remove-icon {
+        background-color: rgba(229, 62, 62, 0.1);
+        color: #e53e3e;
+      }
+      
+      .feature-text {
+        font-weight: 500;
+      }
+      
+      .description-content {
+        background-color: #f8fafc;
+        padding: 2rem;
+        border-radius: 15px;
+      }
+      
+      .review-container {
+        display: grid;
+        grid-template-columns: 3fr 2fr;
+        gap: 2rem;
+      }
+      
+      @media (max-width: 768px) {
+        .review-container {
+          grid-template-columns: 1fr;
+        }
+      }
+      
+      .review-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: var(--shadow);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .review-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+      }
+      
+      .review-username {
+        font-weight: 600;
+        margin: 0;
+      }
+      
+      .review-date {
+        color: var(--gray);
+        font-size: 0.9rem;
+      }
+      
+      .star-rating {
+        color: #ffc107;
+        margin-bottom: 1rem;
+      }
+      
+      .star-rating i {
+        margin-right: 3px;
+      }
+      
+      .review-form {
+        background: white;
+        border-radius: 15px;
+        box-shadow: var(--shadow);
+        padding: 2rem;
+      }
+      
+      .star-select {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .star-select i {
+        cursor: pointer;
+        margin-right: 5px;
+      }
+      
+      .review-textarea {
+        width: 100%;
+        padding: 1rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        resize: vertical;
+        min-height: 120px;
+        margin-bottom: 1rem;
+      }
+      
+      .submit-btn {
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+      
+      .submit-btn:hover {
+        background-color: var(--primary-dark);
+      }
+      
+      .related-section {
+        padding: 4rem 0;
+        background-color: #f8fafc;
+      }
+      
+      .section-title {
+        text-align: center;
+        margin-bottom: 2.5rem;
+      }
+      
+      .section-subtitle {
+        color: var(--primary);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.9rem;
+      }
+      
+      .related-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+      
+      .car-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: var(--transition);
+      }
+      
+      .car-card:hover {
+        transform: translateY(-5px);
+      }
+      
+      .car-card-img {
+        height: 200px;
+        width: 100%;
+        object-fit: cover;
+      }
+      
+      .car-card-content {
+        padding: 1.5rem;
+      }
+      
+      .car-card-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+      
+      .car-card-info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+      }
+      
+      .car-card-brand {
+        color: var(--gray);
+      }
+      
+      .car-card-price {
+        color: var(--primary);
+        font-weight: 600;
+      }
+      
+      .car-card-price span {
+        font-size: 0.9rem;
+        font-weight: 400;
+      }
+      
+      .card-btn {
+        display: block;
+        width: 100%;
+        padding: 0.75rem;
+        text-align: center;
+        background-color: var(--primary);
+        color: white;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: var(--transition);
+      }
+      
+      .card-btn:hover {
+        background-color: var(--primary-dark);
+      }
+      
+      .book-now-fixed {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background-color: var(--primary);
+        color: white;
+        border-radius: 50px;
+        padding: 1rem 2rem;
+        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+        text-decoration: none;
+        font-weight: 600;
+        z-index: 100;
+        transition: var(--transition);
+      }
+      
+      .book-now-fixed:hover {
+        transform: translateY(-3px);
+		box-shadow: 0 6px 20px rgba(52, 152, 219, 0.5);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <img src="{{car.cimage.url}}" alt="{{car.cname}}" class="hero-bg">
+      <div class="hero-overlay"></div>
+      <div class="container">
+        <div class="hero-content">
+          <div class="breadcrumb">
+            <a href="{% url 'index' %}">Home</a>
+            <i class="fas fa-chevron-right"></i>
+            <a href="{% url 'car' %}">Cars</a>
+            <i class="fas fa-chevron-right"></i>
+            
+          </div>
+          <h1 class="mb-0">{{car.cname}}</h1>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Main Content -->
+    <section class="car-main">
+      <div class="container">
+        <!-- Car Info Card -->
+        <div class="car-info-card">
+          <div class="car-title">
+            <div>
+              <span class="car-brand">{{car.brand}}</span>
+              <h2 class="car-name">{{car.cname}}</h2>
+            </div>
+            
+          </div>
+          
+          <!-- Specs Grid -->
+          <div class="spec-grid">
+            <div class="spec-item">
+              <div class="spec-icon">
+                <i class="fas fa-tachometer-alt"></i>
+              </div>
+              <h4 class="spec-title">Mileage</h4>
+              <p class="spec-value">{{car.mileage}}</p>
+            </div>
+            <div class="spec-item">
+              <div class="spec-icon">
+                <i class="fas fa-cogs"></i>
+              </div>
+              <h4 class="spec-title">Transmission</h4>
+              <p class="spec-value">{{car.stransmission}}</p>
+            </div>
+            <div class="spec-item">
+              <div class="spec-icon">
+                <i class="fas fa-chair"></i>
+              </div>
+              <h4 class="spec-title">Seats</h4>
+              <p class="spec-value">{{car.seats}}</p>
+            </div>
+            <div class="spec-item">
+              <div class="spec-icon">
+                <i class="fas fa-suitcase"></i>
+              </div>
+              <h4 class="spec-title">Luggage</h4>
+              <p class="spec-value">{{car.luggage}}</p>
+            </div>
+            <div class="spec-item">
+              <div class="spec-icon">
+                <i class="fas fa-gas-pump"></i>
+              </div>
+              <h4 class="spec-title">Fuel</h4>
+              <p class="spec-value">{{car.sfuel}}</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Pricing Cards -->
+        <div class="price-cards">
+          <div class="price-card">
+            <div class="spec-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <h3 class="price-type">Hourly Rate</h3>
+            <p class="price-amount">₹{{car.hprice}}</p>
+          </div>
+          <div class="price-card">
+            <div class="spec-icon">
+              <i class="fas fa-calendar-day"></i>
+            </div>
+            <h3 class="price-type">Daily Rate</h3>
+            <p class="price-amount">₹{{car.dprice}}</p>
+          </div>
+          <div class="price-card">
+            <div class="spec-icon">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <h3 class="price-type">Monthly Rate</h3>
+            <p class="price-amount">₹{{car.mprice}}</p>
+          </div>
+        </div>
+        
+        <!-- Tabs Section -->
+        <div class="tab-container">
+          <div class="tab-nav">
+            <div class="tab-btn active" data-tab="features">
+              <i class="fas fa-list-ul"></i> Features
+            </div>
+            <div class="tab-btn" data-tab="description">
+              <i class="fas fa-info-circle"></i> Description
+            </div>
+            
+          </div>
+          
+          <div id="features" class="tab-content active">
+            <div class="feature-grid">
+              <div class="feature-item">
+                <div class="feature-icon {% if car.air %}check-icon{% else %}remove-icon{% endif %}">
+                  <i class="fas fa-{% if car.air %}check{% else %}times{% endif %}"></i>
+                </div>
+                <span class="feature-text">Air Conditioning</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon {% if car.gps %}check-icon{% else %}remove-icon{% endif %}">
+                  <i class="fas fa-{% if car.gps %}check{% else %}times{% endif %}"></i>
+                </div>
+                <span class="feature-text">GPS</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon {% if car.Child_Seat %}check-icon{% else %}remove-icon{% endif %}">
+                  <i class="fas fa-{% if car.Child_Seat %}check{% else %}times{% endif %}"></i>
+                </div>
+                <span class="feature-text">Child Seat</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon {% if car.Music %}check-icon{% else %}remove-icon{% endif %}">
+                  <i class="fas fa-{% if car.Music %}check{% else %}times{% endif %}"></i>
+                </div>
+                <span class="feature-text">Music</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon {% if car.Bluetooth %}check-icon{% else %}remove-icon{% endif %}">
+                  <i class="fas fa-{% if car.Bluetooth %}check{% else %}times{% endif %}"></i>
+                </div>
+                <span class="feature-text">Bluetooth</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon {% if car.Car_Kit %}check-icon{% else %}remove-icon{% endif %}">
+                  <i class="fas fa-{% if car.Car_Kit %}check{% else %}times{% endif %}"></i>
+                </div>
+                <span class="feature-text">Car Kit</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon {% if car.Climate_control %}check-icon{% else %}remove-icon{% endif %}">
+                  <i class="fas fa-{% if car.Climate_control %}check{% else %}times{% endif %}"></i>
+                </div>
+                <span class="feature-text">Climate Control</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon {% if car.Seat_Belt %}check-icon{% else %}remove-icon{% endif %}">
+                  <i class="fas fa-{% if car.Seat_Belt %}check{% else %}times{% endif %}"></i>
+                </div>
+                <span class="feature-text">Seat Belt</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon {% if car.ABS %}check-icon{% else %}remove-icon{% endif %}">
+                  <i class="fas fa-{% if car.ABS %}check{% else %}times{% endif %}"></i>
+                </div>
+                <span class="feature-text">ABS</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon {% if car.Airbag %}check-icon{% else %}remove-icon{% endif %}">
+                  <i class="fas fa-{% if car.Airbag %}check{% else %}times{% endif %}"></i>
+                </div>
+                <span class="feature-text">Air Bag</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon {% if car.Parking_Sensor %}check-icon{% else %}remove-icon{% endif %}">
+                  <i class="fas fa-{% if car.Parking_Sensor %}check{% else %}times{% endif %}"></i>
+                </div>
+                <span class="feature-text">Parking Sensor</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon {% if car.Camera %}check-icon{% else %}remove-icon{% endif %}">
+                  <i class="fas fa-{% if car.Camera %}check{% else %}times{% endif %}"></i>
+                </div>
+                <span class="feature-text">Camera</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon {% if car.Cruise_Control %}check-icon{% else %}remove-icon{% endif %}">
+                  <i class="fas fa-{% if car.Cruise_Control %}check{% else %}times{% endif %}"></i>
+                </div>
+                <span class="feature-text">Cruise Control</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon check-icon">
+                  <i class="fas fa-check"></i>
+                </div>
+                <span class="feature-text">Remote Central Locking</span>
+              </div>
+              <div class="feature-item">
+                <div class="feature-icon check-icon">
+                  <i class="fas fa-check"></i>
+                </div>
+                <span class="feature-text">Sunroof</span>
+              </div>
+            </div>
+          </div>
+          
+          <div id="description" class="tab-content">
+            <div class="description-content">
+              <h3>{{car.cname}} Description</h3>
+              <p>From high-end models like the BMW 7 Series to rugged and stylish SUVs like the Jeep Compass, we offer a variety of vehicles that redefine elegance and performance. Each car is maintained to perfection, offering top-notch features, unparalleled safety, and the ultimate driving experience.</p>
+              <p>{{car.desc}}</p>
+            </div>
+          </div>
+          
+          
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script>
+      // Tab functionality
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      const tabContents = document.querySelectorAll('.tab-content');
+      
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Remove active class from all buttons and contents
+          tabBtns.forEach(b => b.classList.remove('active'));
+          tabContents.forEach(c => c.classList.remove('active'));
+          
+          // Add active class to clicked button and corresponding content
+          btn.classList.add('active');
+          const tabId = btn.getAttribute('data-tab');
+          document.getElementById(tabId).classList.add('active');
+        });
+      });
+      
+      // Rating functionality
+      function rate(stars) {
+        const starElements = document.querySelectorAll('.star-select i');
+        
+        // Update star icons
+        for (let i = 0; i < 5; i++) {
+          starElements[i].className = i < stars ? 'fas fa-star' : 'far fa-star';
+        }
+        
+        // Update percentage and hidden input
+        document.getElementById('rating-percent').innerText = `(${stars * 20}%)`;
+        document.getElementById('rating').value = stars;
+      }
+    </script>
+  </body>
+</html>
+{% endblock %}

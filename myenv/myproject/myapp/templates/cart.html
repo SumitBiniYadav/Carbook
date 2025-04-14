@@ -1,0 +1,296 @@
+{% extends 'cheader.html'%}
+{% load static %}
+{% block content%}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<video autoplay muted loop id="bg-video">
+    <source src="{% static 'videos/innvid.mp4' %}" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+
+<div class="container">
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div class="card">
+            <div class="card-header">
+                <h4>Confirm Booking</h4>
+            </div>    
+            
+            <div class="form-section">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pickup_address">Pick-up location</label>
+                        <input type="text" name="pickup_address" id="pickup_address" placeholder="City, Airport, Station, etc" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="drop_address">Drop-off location</label>
+                        <input type="text" name="drop_address" id="drop_address" placeholder="City, Airport, Station, etc" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="book_pick_date">Pick-up date</label>
+                        <input type="date" name="start_date" id="book_pick_date" required>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="book_off_date">Drop-off date</label>
+                        <input type="date" name="end_date" id="book_off_date" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="book_pick_time">Pick-up time</label>
+                        <input type="time" name="pick_time" id="book_pick_time" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="total_days">Total days</label>
+                        <input type="number" name="total_days" id="total_days" min="1" readonly required>
+                    </div>
+                </div>
+            </div>
+          
+            <div class="button-container">
+                <button type="submit" class="submit-btn">Rent A Car Now</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+body {
+    background: #333333;
+    min-height: 100vh;
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    padding-top: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+#bg-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+.container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 0 15%;  /* Added padding on both sides to center the form */
+    box-sizing: border-box;
+}
+
+form {
+    width: 100%;
+    max-width: 600px;
+}
+
+.card {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.card-header {
+    text-align: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.card-header h4 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: #333;
+}
+
+.form-section {
+    padding: 20px 30px;
+    border-bottom: 1px solid #eee;
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -10px 15px;
+}
+
+.form-group {
+    flex: 1 1 45%;
+    padding: 0 10px;
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    color: #555;
+    font-weight: 500;
+}
+
+input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+}
+
+input:focus {
+    border-color: #00c07f;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 192, 127, 0.2);
+}
+
+.button-container {
+    padding: 20px 30px;
+    text-align: center;
+}
+
+.submit-btn {
+    background-color: #00c07f;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+    background-color: #00a066;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+    .container {
+        padding: 0 10%;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 5%;
+    }
+    
+    .form-group {
+        flex: 1 1 100%;
+    }
+    
+    .form-section {
+        padding: 15px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .card-header h4 {
+        font-size: 1.2rem;
+    }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let startDateInput = document.getElementById("book_pick_date");
+    let endDateInput = document.getElementById("book_off_date");
+    let totalDaysInput = document.getElementById("total_days");
+
+    // Set min date to today for both inputs
+    const today = new Date().toISOString().split('T')[0];
+    startDateInput.min = today;
+    endDateInput.min = today;
+    
+    // Initialize with values from sessionStorage if available
+    if (sessionStorage.getItem("start_date")) {
+        startDateInput.value = sessionStorage.getItem("start_date");
+    }
+    if (sessionStorage.getItem("end_date")) {
+        endDateInput.value = sessionStorage.getItem("end_date");
+    }
+    
+    // Function to calculate days between two dates
+    function calculateDays() {
+        if (startDateInput.value && endDateInput.value) {
+            const startDate = new Date(startDateInput.value);
+            const endDate = new Date(endDateInput.value);
+            
+            // Ensure end date is not before start date
+            if (endDate < startDate) {
+                alert("Drop-off date cannot be before pick-up date");
+                endDateInput.value = startDateInput.value;
+                totalDaysInput.value = 1;
+                return;
+            }
+            
+            // Calculate difference in days
+            const timeDiff = endDate.getTime() - startDate.getTime();
+            const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            
+            // Set total days (minimum 1 day)
+            totalDaysInput.value = daysDiff > 0 ? daysDiff : 1;
+        }
+    }
+    
+    // Event listeners for date changes
+    startDateInput.addEventListener("change", function() {
+        sessionStorage.setItem("start_date", this.value);
+        
+        // Update minimum end date
+        endDateInput.min = this.value;
+        
+        // If end date is now invalid, update it
+        if (endDateInput.value && new Date(endDateInput.value) < new Date(this.value)) {
+            endDateInput.value = this.value;
+            sessionStorage.setItem("end_date", this.value);
+        }
+        
+        calculateDays();
+    });
+    
+    endDateInput.addEventListener("change", function() {
+        sessionStorage.setItem("end_date", this.value);
+        calculateDays();
+    });
+    
+    // Calculate days on page load if both dates are set
+    calculateDays();
+    
+    // Disable any extra datepickers that might interfere
+    startDateInput.addEventListener("focus", function() {
+        document.querySelectorAll('.datepicker-dropdown').forEach(el => el.remove());
+    });
+    
+    endDateInput.addEventListener("focus", function() {
+        document.querySelectorAll('.datepicker-dropdown').forEach(el => el.remove());
+    });
+});
+</script>
+    
+{% endblock %}

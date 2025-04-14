@@ -1,0 +1,688 @@
+{% extends 'cheader.html'%}
+{% load static %}
+{% block content%}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Rentals</title>
+    <style>
+        /* Modern Font and Base Styles */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #3563E9;
+            --primary-light: #e9efff;
+            --secondary: #54A6FF;
+            --success: #17C964;
+            --warning: #F59E0B;
+            --danger: #F31260;
+            --gray-100: #F7F9FC;
+            --gray-200: #EDF2F7;
+            --gray-300: #E2E8F0;
+            --gray-400: #CBD5E0;
+            --gray-500: #A0AEC0;
+            --gray-600: #718096;
+            --gray-700: #4A5568;
+            --gray-800: #2D3748;
+            --gray-900: #1A202C;
+            --shadow-sm: 0px 2px 4px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0px 8px 16px rgba(0, 0, 0, 0.1);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--gray-100);
+            color: var(--gray-800);
+            line-height: 1.6;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            height: 105vh;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 40px;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 700px;
+            padding: 0 24px;
+            padding-left: 260px;
+        }
+
+        .hero-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 16px;
+            line-height: 1.2;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: white;
+            margin-bottom: 32px;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .hero-btn {
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .hero-btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+
+        .hero-btn-primary:hover {
+            background-color: #2a4fba;
+            transform: translateY(-2px);
+        }
+
+        .hero-btn-outline {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .hero-btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator a {
+            color: white;
+            opacity: 0.8;
+        }
+
+        .scroll-indicator a:hover {
+            opacity: 1;
+        }
+
+        /* Main Content Styles */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px 40px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 8px 16px;
+            background-color: white;
+            border-radius: var(--radius-sm);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .filter-tab.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .filter-tab:hover:not(.active) {
+            background-color: var(--gray-200);
+        }
+
+        /* Order Card Styles */
+        .orders {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        .order-card {
+            background-color: white;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .order-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-4px);
+        }
+
+        .order-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .order-number {
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .order-date {
+            color: var(--gray-600);
+            font-size: 14px;
+            margin-left: 12px;
+        }
+
+        .order-content {
+            padding: 24px;
+            display: flex;
+            flex-direction: row;
+            gap: 24px;
+        }
+
+        .car-image {
+            width: 240px;
+            height: 180px;
+            flex-shrink: 0;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .car-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .car-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .order-details {
+            flex-grow: 1;
+        }
+
+        .car-model {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--gray-900);
+        }
+
+        .car-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .car-feature {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gray-700);
+            background-color: var(--gray-100);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 14px;
+        }
+
+        .booking-details {
+            background-color: var(--gray-100);
+            padding: 20px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 20px;
+        }
+
+        .booking-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .booking-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .booking-label {
+            color: var(--gray-600);
+            font-size: 14px;
+        }
+
+        .booking-value {
+            font-weight: 500;
+            color: var(--gray-800);
+        }
+
+        .price {
+            color: var(--primary);
+            font-size: 22px;
+            font-weight: 700;
+            text-align: right;
+            margin-bottom: 16px;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .button-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .button-primary:hover {
+            background-color: var(--primary);
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .button-secondary {
+            background-color: var(--gray-200);
+            color: var(--gray-700);
+        }
+
+        .button-secondary:hover {
+            background-color: var(--gray-300);
+            transform: translateY(-2px);
+        }
+
+        .status-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: white;
+            margin-right: 8px;
+        }
+
+        .status-active {
+            background-color: var(--success);
+        }
+
+        .status-inactive {
+            background-color: var(--gray-600);
+        }
+
+        .status-upcoming {
+            background-color: var(--warning);
+        }
+
+        /* Hide inactive orders initially */
+        .order-card.inactive {
+            display: none;
+        }
+
+        /* No bookings message */
+        .no-bookings {
+            text-align: center;
+            padding: 40px;
+            background-color: white;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) translateX(-50%);
+            }
+            40% {
+                transform: translateY(-10px) translateX(-50%);
+            }
+            60% {
+                transform: translateY(-5px) translateX(-50%);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 36px;
+            }
+            
+            .hero-subtitle {
+                font-size: 16px;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                max-width: 80%;
+            }
+            
+            .hero-btn {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .order-content {
+                flex-direction: column;
+            }
+            
+            .car-image {
+                width: 100%;
+                height: 200px;
+            }
+            
+            .order-header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+            
+            .order-date {
+                margin-left: 0;
+            }
+            
+            .actions {
+                justify-content: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .filter-tabs {
+                overflow-x: auto;
+                padding-bottom: 12px;
+                margin-bottom: 20px;
+                scrollbar-width: none;
+            }
+            
+            .filter-tabs::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .filter-tab {
+                white-space: nowrap;
+            }
+            
+            .booking-row {
+                flex-direction: column;
+                gap: 4px;
+            }
+            
+            .actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .button {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero-section" style="background-image: url('{% static 'images/rideim.jpg' %}');">
+        <div class="overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Experience Luxury on Every Journey</h1>
+            <p class="hero-subtitle">Where exceptional service meets premium vehicles for an unforgettable driving experience.</p>
+            <div class="hero-buttons">
+                <a href="{% url 'car'%}" class="hero-btn hero-btn-primary">Explore Fleet</a>
+                <a href="{% url 'car'%}" class="hero-btn hero-btn-outline">Book Now</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <a href="#rentals">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 9l6 6 6-6"></path>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <div class="container" id="rentals">
+        <div class="page-header">
+            <h2 class="page-title">My Rentals</h2>
+        </div>
+        
+        <div class="filter-tabs">
+            <div class="filter-tab active" data-filter="all">All</div>
+            <div class="filter-tab" data-filter="active">Paid</div>
+            <div class="filter-tab" data-filter="inactive">Unpaid</div>
+        </div>
+        
+        <div class="orders">
+            {% for booking in booking %}
+            <div class="order-card {% if booking.payment_status %}active-booking{% else %}inactive-booking{% endif %}" data-status="{% if booking.payment_status %}active{% else %}inactive{% endif %}">
+                <div class="order-header">
+                    <span class="order-number">Order #{{ booking.id }}</span>
+                    <div>
+                        {% if booking.payment_status and not booking.reject_status %}
+                            <span class="status-tag status-active">Active</span>
+                        {% else %}
+                            <span class="status-tag status-inactive">Inactive</span>
+                        {% endif %}
+                        <span class="order-date">Booked on: {{ booking.start_date|date:"d-m-Y" }}</span>
+                    </div>
+                </div>
+                <div class="order-content">
+                    <div class="car-image">
+                        <img src="{{ booking.car.cimage.url }}" alt="{{ booking.car.cname }}">
+                    </div>
+                    <div class="order-details">
+                        <h3 class="car-model">{{ booking.car.cname }}</h3>
+                        <div class="car-features">
+                            <div class="car-feature">
+                                <!-- Fuel Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 22h12"></path>
+                                    <path d="M8 4v10"></path>
+                                    <path d="M12 4v10"></path>
+                                    <path d="M17 8v8a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1a2 2 0 0 0-2 2z"></path>
+                                    <path d="M7 8H3a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h4"></path>
+                                    <path d="M13 8H9a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h4"></path>
+                                </svg>
+                                {{ booking.car.sfuel }}
+                            </div>
+                            <div class="car-feature">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="11" width="18" height="10" rx="2"></rect>
+                                    <circle cx="12" cy="5" r="2"></circle>
+                                    <path d="M12 7v4"></path>
+                                </svg>
+                                {{ booking.car.stransmission }}
+                            </div>
+                            <div class="car-feature">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                                {{ booking.car.seats }} seats
+                            </div>
+                        </div>
+                        <div class="booking-details">
+                            <div class="booking-row">
+                                <span class="booking-label">Pickup Date</span>
+                                <span class="booking-value">{{ booking.start_date|date:"d-m-Y" }}</span>
+                            </div>
+                            <div class="booking-row">
+                                <span class="booking-label">Pickup Time</span>
+                                <span class="booking-value">{{ booking.pick_time }}</span>
+                            </div>
+                            <div class="booking-row">
+                                <span class="booking-label">Return Date & Time</span>
+                                <span class="booking-value">{{ booking.end_date|date:"d-m-Y" }}</span>
+                            </div>
+                            <div class="booking-row">
+                                <span class="booking-label">Distance Limit</span>
+                                <span class="booking-value">300 kms</span>
+                            </div>
+                        </div>
+                        <div class="price">₹ {{ booking.total_amount }}</div>
+                        <div class="actions">
+                            <button class="button button-secondary">Cancel Order</button>
+                            <a href="{% url 'bookdetail' booking.id %}">
+                                <button class="button button-primary">View Details</button>
+                            </a>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="no-bookings">
+                <p>No bookings found.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Add JavaScript for tab functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.filter-tab');
+            const orderCards = document.querySelectorAll('.order-card');
+            const noBookingsMessage = document.querySelector('.no-bookings');
+            
+            // Function to show/hide no bookings message
+            function updateNoBookingsMessage(filter) {
+                let visibleCards = 0;
+                
+                orderCards.forEach(card => {
+                    if ((filter === 'all') || (card.dataset.status === filter)) {
+                        visibleCards++;
+                    }
+                });
+                
+                if (noBookingsMessage) {
+                    if (visibleCards === 0) {
+                        noBookingsMessage.style.display = 'block';
+                        noBookingsMessage.textContent = `No ${filter} bookings found.`;
+                    } else {
+                        noBookingsMessage.style.display = 'none';
+                    }
+                }
+            }
+            
+            // Function to filter cards
+            function filterCards(filter) {
+                orderCards.forEach(card => {
+                    if (filter === 'all' || card.dataset.status === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                updateNoBookingsMessage(filter);
+            }
+            
+            // Add click event listeners to tabs
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Get the filter value from data attribute
+                    const filter = this.dataset.filter;
+                    
+                    // Filter the cards
+                    filterCards(filter);
+                });
+            });
+            
+            // Initialize with "All" filter
+            filterCards('all');
+        });
+    </script>
+</body>
+{% endblock %}

@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Car Rental Invoice</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --text-color: #333;
+            --background-color: #f4f6f7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .invoice-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .company-logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .invoice-title {
+            text-align: right;
+            color: var(--secondary-color);
+        }
+
+        .customer-details, .car-details {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .car-image {
+            max-width: 300px;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .invoice-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .detail-item {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .total-amount {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 8px;
+            font-size: 1.2em;
+        }
+
+        .thank-you {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--primary-color);
+            font-style: italic;
+        }
+
+        @media print {
+            body {
+                background-color: white;
+            }
+            .invoice-container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice-container">
+        <div class="invoice-header">
+            <div class="company-logo">TurboHire</div>
+            <div class="invoice-title">
+                <h1>Rental Invoice</h1>
+                <p>Booking ID: {{ booking.id }}</p>
+                <p>Date: {{ date }}</p>
+            </div>
+        </div>
+
+        <div class="customer-details">
+            <h2 class="section-title">Customer Information</h2>
+            <div class="invoice-details">
+                <div class="detail-item">
+                    <strong>Name:</strong> {{ booking.user.name }}
+                </div>
+                <div class="detail-item">
+                    <strong>Contact:</strong> {{ booking.user.mobile }}
+                </div>
+            </div>
+        </div>
+
+        <div class="car-details">
+            <h2 class="section-title">Vehicle Details</h2>
+            <div class="invoice-details">
+                <div class="detail-item">
+                    <strong>Car Name:</strong> {{ car.cname }}
+                </div>
+                <div class="detail-item">
+                    <strong>Fuel Type:</strong> {{ car.sfuel }}
+                </div>
+                <div class="detail-item">
+                    <strong>Transmission:</strong> {{ car.stransmission }}
+                </div>
+                <div class="detail-item">
+                    <strong>Mileage:</strong> {{ car.mileage }} km/l
+                </div>
+            </div>
+        </div>
+
+        <div class="car-details">
+            <h2 class="section-title">Payment Details</h2>
+            <div class="invoice-details">
+                <div class="detail-item">
+                    <p><strong>Total Amount Paid:</strong> INR.{{ booking.total_amount }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="thank-you">
+            <p>Thank you for choosing TurboHire!</p>
+            <p>We appreciate your business and hope you enjoyed your rental experience.</p>
+        </div>
+    </div>
+</body>
+</html>
+

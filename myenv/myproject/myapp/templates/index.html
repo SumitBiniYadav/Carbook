@@ -1,0 +1,423 @@
+{% extends 'header.html'%}
+{% load static %}
+{% block content%}
+<!DOCTYPE html>
+<html lang="en">
+    
+<div class="hero-wrap ">
+	<video autoplay loop muted playsinline class="video-background">
+	  <source src="{% static 'videos/vid123.mp4' %}" type="video/mp4">
+	  Your browser does not support the video tag.
+	</video>
+	<style>	
+		.video-background {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			z-index: -1;
+			filter: brightness(0.7) contrast(1.2);
+		}
+		
+	  
+	.hero-wrap {
+		position: relative;
+		overflow: hidden;
+		height: 90vh;
+		display: flex;
+		align-items: center;
+	}
+	
+	.text-center h1 {
+		text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+		font-weight: 700;
+		transform: scale(1);
+		transition: transform 0.3s ease;
+	}
+	
+	.text-center h1:hover {
+		transform: scale(1.05);
+	}
+	
+	.icon-wrap {
+		background: rgba(255, 255, 255, 0.1);
+		backdrop-filter: blur(5px);
+		border-radius: 50px;
+		padding: 8px 15px;
+		transition: all 0.3s ease;
+	}
+	
+	.icon-wrap:hover {
+		background: rgba(255, 255, 255, 0.2);
+		transform: translateY(-5px);
+	}
+	</style>
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text justify-content-start align-items-center justify-content-center">
+          <div class="col-lg-8 ftco-animate">
+          	<div class="text w-100 text-center mb-md-5 pb-md-5">
+	            <h1 class="mb-4">Your Trusted Ride Across Every Mile!</h1>
+	            <p style="font-size: 20px; font-weight: 400; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">Experience hassle-free car rentals with our customer portal — easy browsing, quick bookings, and smooth management.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+     {% comment %} <section class="ftco-section ftco-no-pt bg-light">
+    	<div class="container">
+    		<div class="row no-gutters">
+    			<div class="col-md-12 featured-top">
+    				<div class="row no-gutters">
+	  					<div class="col-md-12 d-flex align-items-center">
+	  						<div class="services-wrap rounded w-100">
+	  							<h2 class="heading-section mb-4 text-center">A Better Way to Rent Your Perfect Car</h2>
+	  							<div class="row d-flex mb-4 justify-content-center">
+					          <div class="col-md-3 d-flex align-self-stretch ftco-animate">
+					            <div class="services w-100 text-center">
+				              	<div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-route"></span></div>
+				              	<div class="text w-100">
+					                <h3 class="heading mb-3">Choose Your Pickup Location</h3>
+					                <p>Select from our multiple convenient locations across the city. We offer flexible pickup and drop-off points to match your travel needs.</p>
+				                </div>
+					            </div>      
+					          </div>
+					          <div class="col-md-3 d-flex align-self-stretch ftco-animate">
+					            <div class="services w-100 text-center">
+				              	<div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-handshake"></span></div>
+				              	<div class="text w-100">
+					                <h3 class="heading mb-3">Select the Best Deal</h3>
+					                <p>Browse our extensive fleet with transparent pricing. Compare options and choose packages that best suit your budget and preferences.</p>
+					              </div>
+					            </div>      
+					          </div>
+					          <div class="col-md-3 d-flex align-self-stretch ftco-animate">
+					            <div class="services w-100 text-center">
+				              	<div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-rent"></span></div>
+				              	<div class="text w-100">
+					                <h3 class="heading mb-3">Reserve Your Rental Car</h3>
+					                <p>Quick, secure online booking in just a few clicks. Receive instant confirmation and prepare for a smooth, hassle-free rental experience.</p>
+					              </div>
+					            </div>      
+					          </div>
+					          <div class="col-md-3 d-flex align-self-stretch ftco-animate">
+					            <div class="services w-100 text-center">
+				              	<div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-car"></span></div>
+				              	<div class="text w-100">
+					                <h3 class="heading mb-3">Enjoy Your Ride</h3>
+					                <p>Hit the road with confidence in our well-maintained vehicles. 24/7 roadside assistance ensures peace of mind throughout your journey.</p>
+					              </div>
+					            </div>      
+					          </div>
+					        </div>
+					        <div class="text-center">
+					            <p><a href="{% url 'car' %}" class="btn btn-primary py-3 px-5">Reserve Your Perfect Car</a></p>
+					        </div>
+	  						</div>
+	  					</div>
+	  				</div>
+				</div>
+  		</div>
+    </section>
+ {% endcomment %}
+ <div class="py-5"></div>
+	<section class="ftco-section ftco-no-pt bg-light">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-12 heading-section text-center ftco-animate mb-5">
+					<span class="subheading">What we offer</span>
+					<h2 class="mb-2">Featured Vehicles</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="carousel-car owl-carousel">
+						{% for i in car %}
+						<div class="item">
+							<div class="car-wrap rounded ftco-animate">
+								<div class="img rounded d-flex align-items-end" style="background-image: url({{i.cimage.url}});">
+								</div>
+								<div class="text">
+									<h2 class="mb-0"><a href="#">{{ i.cname }}</a></h2>
+									<div class="d-flex mb-3">
+										<span class="cat">{{ i.cname }}</span>
+										<p class="price ml-auto">₹{{ i.dprice }} <span>/day</span></p>
+									</div>
+									<p class="d-flex mb-0 d-block">
+										<a href="{% url 'idetails' pk=i.pk %}" class="btn btn-primary py-2 mr-1">Book now</a>
+										<a href="{% url 'idetails' pk=i.pk %}" class="btn btn-secondary py-2 ml-1">Details</a>
+									</p>
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+
+    <section class="ftco-section ftco-about">
+			<div class="container">
+				<div class="row no-gutters">
+					<div class="col-md-6 p-md-5 img img-2 d-flex justify-content-center align-items-center" style="background-image: url({% static 'images/intpic.jpg' %});">
+					</div>
+					<div class="col-md-6 wrap-about ftco-animate">
+	          <div class="heading-section heading-section-white pl-md-5">
+	          	<span class="subheading">About us</span>
+	            <h2 class="mb-4">Welcome to TurboHire</h2>
+
+	            <p>At TurboHire, we believe every journey should be smooth, comfortable, and hassle-free. Whether you need a stylish ride for a business trip, a spacious car for a family vacation, or a quick rental for daily errands, we've got you covered. Our wide selection of well-maintained vehicles and flexible rental options ensure you always find the perfect car for your needs.	</p>
+	            <p>On her way she met a copy. The copy warned the Little Blind Text, that where it came from it would have been rewritten a thousand times and everything that was left from its origin would be the word "and" and the Little Blind Text should turn around and return to its own, safe country. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+	            <p><a href="{% url 'car' %}" class="btn btn-primary py-3 px-4">Search Vehicle</a></p>
+	          </div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="ftco-section">
+			<div class="container">
+				<div class="row justify-content-center mb-5">
+          <div class="col-md-7 text-center heading-section ftco-animate">
+          	<span class="subheading">Services</span>
+            <h2 class="mb-3">Our Latest Services</h2>
+          </div>
+        </div>
+				<div class="row">
+					<div class="col-md-3">
+						<div class="services services-2 w-100 text-center">
+            	<div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-wedding-car"></span></div>
+            	<div class="text w-100">
+                <h3 class="heading mb-2">Wedding Ceremony</h3>
+                <p>Arrive in style on your special day with our luxury car rental service. From elegant sedans to premium SUVs, TurboHire ensures you make a grand entrance and enjoy a smooth, comfortable ride throughout your wedding celebrations.</p>
+              </div>
+            </div>
+					</div>
+					<div class="col-md-3">
+						<div class="services services-2 w-100 text-center">
+            	<div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-transportation"></span></div>
+            	<div class="text w-100">
+                <h3 class="heading mb-2">City Transfer</h3>
+                <p>Need a quick, reliable ride across the city? Our city transfer service offers a fleet of well-maintained, comfortable cars driven by professional chauffeurs, making sure you reach your destination on time and in style.</p>
+              </div>
+            </div>
+					</div>
+					<div class="col-md-3">
+						<div class="services services-2 w-100 text-center">
+            	<div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-car"></span></div>
+            	<div class="text w-100">
+                <h3 class="heading mb-2">Airport Transfer</h3>
+                <p>Start or end your journey stress-free with our airport transfer service. We provide punctual pickups and drop-offs with luxury vehicles, ensuring a relaxing and seamless travel experience.</p>
+              </div>
+            </div>
+					</div>
+					<div class="col-md-3">
+						<div class="services services-2 w-100 text-center">
+            	<div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-transportation"></span></div>
+            	<div class="text w-100">
+                <h3 class="heading mb-2">Whole City Tour</h3>
+                <p>Explore the city like never before! TurboHire's whole city tour service lets you visit top landmarks and hidden gems in total comfort and luxury, with experienced drivers who know the best routes and spots.</p>
+              </div>
+            </div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="ftco-section ftco-intro" style="background-image: url({% static 'images/carimage.jpg' %});">
+			<div class="overlay"></div>
+			<div class="container">
+				<div class="row justify-content-end">
+					<div class="col-md-6 heading-section heading-section-white ftco-animate">
+            <h2 class="mb-3">Do You Want To Earn With Us? So Don't Be Late.</h2>
+            <a href="{% url 'lindex' %}" class="btn btn-primary btn-lg">Become A Driver</a>
+          </div>
+				</div>
+			</div>
+		</section>
+
+
+		<section class="ftco-section testimony-section bg-light">
+			<div class="container">
+			  <div class="row justify-content-center mb-5">
+				<div class="col-md-7 text-center heading-section ftco-animate">
+					<span class="subheading">Testimonial</span>
+				  <h2 class="mb-3">Voices of Our Leaders: Insights from TurboHire's Owners</h2>
+				</div>
+			  </div>
+			  <div class="row ftco-animate">
+				<div class="col-md-12">
+				  <div class="carousel-testimony owl-carousel ftco-owl">
+					<div class="item">
+					  <div class="testimony-wrap rounded text-center py-4 pb-5">
+						<div class="user-img mb-2" style="background-image: url({% static 'images/pr1.jpg' %})">
+						</div>
+						<div class="text pt-4">
+						  <p class="mb-4">"TurboHire was built with a vision to revolutionize the car rental industry by making premium and luxury cars accessible to everyone. Our app ensures a seamless, user-friendly experience for all customers."</p>
+						  <p class="name">Sam Johnson</p>
+						  <span class="position">CEO, Innovate Solutions</span>
+						</div>
+					  </div>
+					</div>
+					<div class="item">
+					  <div class="testimony-wrap rounded text-center py-4 pb-5">
+						<div class="user-img mb-2" style="background-image: url({% static 'images/pr2.jpg' %})">
+						</div>
+						<div class="text pt-4">
+						  <p class="mb-4">"TurboHire is not just a business; it’s a commitment to excellence in mobility solutions. We aim to provide the best fleet and services so our customers experience true comfort and convenience."</p>
+						  <p class="name">Ravi Kumar</p>
+						  <span class="position">Product Director</span>
+						</div>
+					  </div>
+					</div>
+					<div class="item">
+					  <div class="testimony-wrap rounded text-center py-4 pb-5">
+						<div class="user-img mb-2" style="background-image: url({% static 'images/pr3.jpg' %})">
+						</div>
+						<div class="text pt-4">
+						  <p class="mb-4">"We built TurboHire with a customer-first approach. Every feature of our app is designed to provide ease of booking, affordability, and reliability, ensuring a hassle-free rental experience."</p>
+						  <p class="name">Emanuel Rodriguez</p>
+						  <span class="position">Marketing Director</span>
+						</div>
+					  </div>
+					</div>
+					<div class="item">
+					  <div class="testimony-wrap rounded text-center py-4 pb-5">
+						<div class="user-img mb-2" style="background-image: url({% static 'images/person_4.jpg' %})">
+						</div>
+						<div class="text pt-4">
+						  <p class="mb-4">"At TurboHire, we believe in building a team that shares our passion for redefining car rentals. Our goal is to create a service that sets a new standard for professionalism and customer care."</p>
+						  <p class="name">David Thompson</p>
+						  <span class="position">CTO, TechNova</span>
+						</div>
+					  </div>
+					</div>
+					<div class="item">
+					  <div class="testimony-wrap rounded text-center py-4 pb-5">
+						<div class="user-img mb-2" style="background-image: url({% static 'images/person_5.jpg' %})">
+						</div>
+						<div class="text pt-4">
+						  <p class="mb-4">"Innovation and efficiency drive TurboHire. We are constantly improving our app to offer the best features, making luxury car rentals more accessible than ever. Our goal is to redefine the car rental experience	. </p>
+						  <p class="name">Olive Wilson</p>
+						  <span class="position">E-Commerce Manager</span>
+						</div>
+					  </div>
+					</div>
+				  </div>
+				</div>
+			  </div>
+			</div>
+		  </section>
+
+    <section class="ftco-section">
+      <div class="container">
+        <div class="row justify-content-center mb-5">
+          <div class="col-md-7 heading-section text-center ftco-animate">
+          	<span class="subheading">Blog</span>
+            <h2>Recent Blog</h2>
+          </div>
+        </div>
+        <div class="row d-flex">
+          <div class="col-md-4 d-flex ftco-animate">
+          	<div class="blog-entry justify-content-end">
+              <a href="blog-single.html" class="block-20" style="background-image: url('{% static 'images/image_1.jpg' %}');">
+              </a>
+              <div class="text pt-4">
+              	<div class="meta mb-3">
+                  <div><a href="#">Oct. 29, 2019</a></div>
+                  <div><a href="#">Admin</a></div>
+                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+                </div>
+                <h3 class="heading mt-2"><a href="#">Why Lead Generation is Key for Business Growth</a></h3>
+                <p><a href="#" class="btn btn-primary">Read more</a></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 d-flex ftco-animate">
+          	<div class="blog-entry justify-content-end">
+              <a href="blog-single.html" class="block-20" style="background-image: url('{% static 'images/image_2.jpg' %}');">
+              </a>
+              <div class="text pt-4">
+              	<div class="meta mb-3">
+                  <div><a href="#">Oct. 29, 2019</a></div>
+                  <div><a href="#">Admin</a></div>
+                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+                </div>
+                <h3 class="heading mt-2"><a href="#">Why Lead Generation is Key for Business Growth</a></h3>
+                <p><a href="#" class="btn btn-primary">Read more</a></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 d-flex ftco-animate">
+          	<div class="blog-entry">
+              <a href="blog-single.html" class="block-20" style="background-image: url('{% static 'images/image_3.jpg' %}');">
+              </a>
+              <div class="text pt-4">
+              	<div class="meta mb-3">
+                  <div><a href="#">Oct. 29, 2019</a></div>
+                  <div><a href="#">Admin</a></div>
+                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+                </div>
+                <h3 class="heading mt-2"><a href="#">Why Lead Generation is Key for Business Growth</a></h3>
+                <p><a href="#" class="btn btn-primary">Read more</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>	
+
+    <section class="ftco-counter ftco-section img bg-light" id="section-counter">
+			<div class="overlay"></div>
+    	<div class="container">
+    		<div class="row">
+          <div class="col-md-6 col-lg-3 justify-content-center counter-wrap ftco-animate">
+            <div class="block-18">
+              <div class="text text-border d-flex align-items-center">
+                <strong class="number" data-number="60">0</strong>
+                <span>Year <br>Experienced</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 justify-content-center counter-wrap ftco-animate">
+            <div class="block-18">
+              <div class="text text-border d-flex align-items-center">
+                <strong class="number" data-number="1090">0</strong>
+                <span>Total <br>Cars</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 justify-content-center counter-wrap ftco-animate">
+            <div class="block-18">
+              <div class="text text-border d-flex align-items-center">
+                <strong class="number" data-number="2590">0</strong>
+                <span>Happy <br>Customers</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3 justify-content-center counter-wrap ftco-animate">
+            <div class="block-18">
+              <div class="text d-flex align-items-center">
+                <strong class="number" data-number="67">0</strong>
+                <span>Total <br>Branches</span>
+              </div>
+            </div>
+          </div>
+        </div>
+    	</div>
+    </section>	
+
+    <script>
+		document.addEventListener("DOMContentLoaded", function() {
+		  document.body.style.opacity = 1;
+		});
+	  </script>
+	  
+  </body>
+</html>
+{% endblock %}

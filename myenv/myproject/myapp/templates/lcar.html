@@ -1,0 +1,131 @@
+{% extends 'lheader.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<!-- Hero Section -->
+<section class="hero-section position-relative vh-100 d-flex align-items-center" style="background-image: url('{% static 'images/carimage.jpg' %}'); background-size: cover; background-position: center;">
+    <div class="overlay position-absolute w-100 h-100" style="background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%);"></div>
+    <div class="container position-relative z-index-1">
+      <div class="row">
+        <div class="col-lg-7 col-md-10">
+          
+          <h1 class="display-3 text-white fw-bold mb-4 animate__animated animate__fadeInUp">Manage Your Rental Fleet</h1>
+          <p class="lead text-white mb-5 animate__animated animate__fadeInUp animate__delay-1s">Effortlessly view, edit, and update your listed vehicles on TurboHire.</p>
+          <div class="d-flex flex-wrap gap-3 animate__animated animate__fadeInUp animate__delay-2s">
+            <a href="{% url 'add' %}" class="btn btn-primary btn-lg px-4 py-3 rounded-pill fw-semibold">View Listed Cars</a>
+            <a href="{% url 'bookreq' %}" class="btn btn-outline-light btn-lg px-4 py-3 rounded-pill fw-semibold">View Your Booking Request</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+
+<section class="ftco-section bg-dark">
+    <div class="container">
+        <div class="row d-flex flex-wrap">
+            {% for i in car %}
+            <div class="col-md-4">
+                <div class="car-wrap rounded ftco-animate">
+                    <div class="img rounded d-flex align-items-end" style="background-image: url({{i.cimage.url}});">
+                    </div>
+                    <div class="text text-center">
+                        <h2 class="mb-0"><a href="car-single.html">{{i.cname}}</a></h2>
+                        <div class="d-flex justify-content-center mb-3">
+                            <span class="cat">{{i.cname}}</span>
+                            <p class="price ml-2">{{i.hprice}}<span>/day</span></p>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <a href="{% url 'updatee' pk=i.pk %}" class="btn btn-primary py-2 mr-1">Update Car</a>
+                            <a href="{% url 'details' pk=i.pk %}" class="btn btn-secondary py-2 ml-1">Details</a>
+                            <a href="{% url 'delete' pk=i.pk %}" class="btn btn-danger py-2 ml-1" onclick="return confirmDelete();">
+                                <i class="bi bi-trash3-fill" style="font-size: 1.5rem;"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if car.has_other_pages %}
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div class="block-27">
+                    <ul>
+                        {% if car.has_previous %}
+                        <li>
+                            <a href="?page={{ car.previous_page_number }}">&lt;</a>
+                        </li>
+                        {% endif %}
+
+                        {% for page_num in car.paginator.page_range %}
+                            {% if car.number == page_num %}
+                            <li class="active">
+                                <span>{{ page_num }}</span>
+                            </li>
+                            {% else %}
+                            <li>
+                                <a href="?page={{ page_num }}">{{ page_num }}</a>
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if car.has_next %}
+                        <li>
+                            <a href="?page={{ car.next_page_number }}">&gt;</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<script>
+function confirmDelete() {
+    return confirm('Are you sure you want to delete this car? This action cannot be undone.');
+}
+</script>
+
+<style>
+.block-27 ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    padding: 20px 0;
+}
+
+.block-27 ul li {
+    margin: 0 5px;
+}
+
+.block-27 ul li a,
+.block-27 ul li span {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 50%;
+    display: inline-block;
+    background: #fff;
+    color: #000;
+    text-decoration: none;
+}
+
+.block-27 ul li.active span {
+    background: #007bff;
+    color: #fff;
+}
+
+.block-27 ul li a:hover {
+    background: #007bff;
+    color: #fff;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,664 @@
+{% extends 'lheader.html'%}
+{% load static %}
+{% block content%}
+<!DOCTYPE html>
+<html lang="en">
+    
+<!-- Add Font Awesome CDN link -->
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Add Swiper JS CDN for carousel functionality -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.min.css">
+</head>
+
+<div class="hero-wrap ">
+	<video autoplay loop muted playsinline class="video-background">
+	  <source src="{% static 'videos/linvid.mp4' %}" type="video/mp4">
+	  Your browser does not support the video tag.
+	</video>
+	<style>
+	.video-background {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		z-index: -1;
+        filter: brightness(0.8) contrast(1.1);
+	}
+	  
+	.hero-wrap {
+		position: relative;
+		overflow: hidden;
+		height: 100vh;
+		display: flex;
+		align-items: center;
+	}
+	
+	/* Fix for white strip - adjust overlay */
+	.overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.3);
+		z-index: 0;
+	}
+	
+	.text-center h1 {
+		text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+		font-weight: 700;
+		transform: scale(1);
+		transition: transform 0.3s ease;
+	}
+	
+	.text-center h1:hover {
+		transform: scale(1.05);
+	}
+	
+	.icon-wrap {
+		background: rgba(255, 255, 255, 0.1);
+		backdrop-filter: blur(5px);
+		border-radius: 50px;
+		padding: 8px 15px;
+		transition: all 0.3s ease;
+	}
+	
+	.icon-wrap:hover {
+		background: rgba(255, 255, 255, 0.2);
+		transform: translateY(-5px);
+	}
+
+	.section {
+		padding: 100px 0;
+	}
+	  
+	.section-title {
+		text-align: center;
+		margin-bottom: 60px;
+	}
+	  
+	.section-title h2 {
+		font-size: 36px;
+		font-weight: 700;
+		margin-bottom: 16px;
+	}
+	  
+	.section-title p {
+		color: var(--gray);
+		max-width: 600px;
+		margin: 0 auto;
+	}
+	  
+	.features {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 30px;
+	}
+	  
+	.feature-card {
+		background-color: white;
+		border-radius: 16px;
+		padding: 30px;
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+		transition: transform 0.3s, box-shadow 0.3s;
+	}
+	  
+	.feature-card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+	}
+	  
+	.feature-icon {
+		width: 60px;
+		height: 60px;
+		background-color: rgba(53, 99, 233, 0.1);
+		border-radius: 12px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 20px;
+	}
+	  
+	.feature-icon i {
+		font-size: 24px;
+		color: var(--primary);
+	}
+	  
+	.feature-title {
+		font-size: 20px;
+		font-weight: 600;
+		margin-bottom: 12px;
+	}
+	  
+	.feature-description {
+		color: var(--gray);
+		font-size: 16px;
+	}
+
+	.vehicles {
+		background-color: #f8f9fa;
+		padding: 80px 0;
+	}
+	
+	/* Updated vehicle card styles for carousel */
+	.vehicle-card {
+		background-color: white;
+		border-radius: 16px;
+		overflow: hidden;
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+		transition: transform 0.3s, box-shadow 0.3s;
+		height: auto;
+		width: 100%;
+		
+	}
+	  
+	.vehicle-card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+	}
+	  
+	.vehicle-image {
+		height: 220px;
+		background-size: cover;
+		background-position: center;
+	}
+	  
+	.vehicle-details {
+		padding: 20px;
+		
+	}
+	  
+	.vehicle-title {
+		font-size: 20px;
+		font-weight: 600;
+		margin-bottom: 10px;
+		
+	}
+	  
+	.vehicle-meta {
+		display: flex;
+		justify-content:center;
+		gap: 50px;
+		align-items: center;
+		margin-bottom: 5px;
+		margin-top: 20px;	
+	}
+	  
+	.vehicle-category {
+		background-color: rgba(53, 99, 233, 0.1);
+		color: var(--primary);
+		padding: 4px 12px;
+		border-radius: 100px;
+		font-size: 14px;
+	}
+	  
+	.vehicle-price {
+		font-weight: 700;
+		color: var(--dark);
+	}
+	  
+	.vehicle-price span {
+		font-weight: 400;
+		color: var(--gray);
+		font-size: 14px;
+	}
+	  
+	.vehicle-actions {
+		display: flex;
+		padding-top: 20px;
+		justify-content: center;
+		gap: 40px;
+		
+	}
+	
+	/* Swiper carousel styles */
+	.swiper {
+		width: 100%;
+		padding-bottom: 50px;
+	}
+	
+	.swiper-slide {
+		height: auto;
+		display: flex;
+	}
+	
+	.swiper-pagination {
+		bottom: 0;
+	}
+	
+	.swiper-button-next, .swiper-button-prev {
+		color: var(--primary);
+		background-color: white;
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	}
+	
+	.swiper-button-next:after, .swiper-button-prev:after {
+		font-size: 18px;
+	}
+	
+	.empty-vehicles {
+		text-align: center;
+		padding: 40px;
+		background-color: rgba(53, 99, 233, 0.05);
+		border-radius: 16px;
+	}
+	
+	.benefits-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 30px;
+	}
+	  
+	.benefit-card {
+		background-color: white;
+		border-radius: 16px;
+		padding: 30px;
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+		transition: transform 0.3s, box-shadow 0.3s;
+	}
+	  
+	.benefit-card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+	}
+	  
+	.benefit-icon {
+		width: 60px;
+		height: 60px;
+		background-color: rgba(53, 99, 233, 0.1);
+		border-radius: 12px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 20px;
+	}
+	  
+	.benefit-icon i {
+		font-size: 24px;
+		color: var(--primary);
+	}
+	
+	.stats {
+		background-color: var(--dark);
+		color: white;
+	}
+	  
+	.stats-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		gap: 30px;
+		text-align: center;
+	}
+	  
+	.stat-item {
+		padding: 30px;
+	}
+	  
+	.stat-number {
+		font-size: 48px;
+		font-weight: 700;
+		margin-bottom: 8px;
+		color: var(--primary);
+	}
+	  
+	.stat-label {
+		font-size: 18px;
+		opacity: 0.8;
+	}
+	
+	/* Define CSS variables for colors */
+	:root {
+		--primary: #3563e9;
+		--dark: #1a202c;
+		--gray: #64748b;
+	}
+	
+	@media (max-width: 768px) {
+		.hero-title {
+		  font-size: 36px;
+		}
+		
+		nav ul {
+		  display: none;
+		}
+		
+		.footer-content {
+		  grid-template-columns: 1fr;
+		  gap: 40px;
+		}
+		
+		.vehicle-swiper {
+		  padding: 0 15px;
+		}
+	}
+	</style>
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text justify-content-start align-items-center justify-content-center">
+          <div class="col-lg-8 ftco-animate">
+          	<div class="text w-100 text-center mb-md-5 pb-md-5">
+	            <h1 class="mb-4">Turn Your Car Into Passive Income!</h1>
+	            <p style="font-size: 20px; font-weight: 400; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">Monetize your idle vehicle with our lessor portal — easy listing, secure bookings, and automated payment management.</p>
+	            <a href="https://vimeo.com/45830194" class="icon-wrap popup-vimeo d-flex align-items-center mt-4 justify-content-center">
+	            	<div class="icon d-flex align-items-center justify-content-center">
+	            		<span class="ion-ios-play"></span>
+	            	</div>
+	            	<div class="heading-title ml-5">
+		            	<span>Your Car, Your Terms, Our Platform!</span>
+	            	</div>
+	            </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+	
+
+	<section class="section">
+		<div class="container">
+		  <div class="section-title">
+			<h2>A Smarter Way to Earn From Your Vehicle</h2>
+			<p>Our platform makes it easy to list your car and start earning passive income with minimal effort.</p>
+		  </div>
+		  
+		  <div class="features">
+			<div class="feature-card">
+			  <div class="feature-icon">
+				<i class="fas fa-car-side"></i>
+			  </div>
+			  <h3 class="feature-title">Register Your Vehicle</h3>
+			  <p class="feature-description">List your car in minutes with our simple registration process. Upload photos, set availability, and showcase your vehicle's unique features.</p>
+			</div>
+			
+			<div class="feature-card">
+			  <div class="feature-icon">
+				<i class="fas fa-tag"></i>
+			  </div>
+			  <h3 class="feature-title">Set Your Pricing</h3>
+			  <p class="feature-description">You control your earnings with flexible pricing options. Set daily, weekly, or monthly rates and special pricing for peak seasons or events.</p>
+			</div>
+			
+			<div class="feature-card">
+			  <div class="feature-icon">
+				<i class="fas fa-calendar-check"></i>
+			  </div>
+			  <h3 class="feature-title">Manage Bookings</h3>
+			  <p class="feature-description">Review and approve rental requests through our intuitive dashboard. Set your own terms and communicate directly with renters before confirming.</p>
+			</div>
+			
+			<div class="feature-card">
+			  <div class="feature-icon">
+				<i class="fas fa-wallet"></i>
+			  </div>
+			  <h3 class="feature-title">Collect Payments</h3>
+			  <p class="feature-description">Receive secure, timely payments directly to your account. Our platform handles transactions, deposits, and provides comprehensive income reports.</p>
+			</div>
+		  </div>
+		</div>
+	  </section>
+	
+	<!-- Updated Vehicles Section with Auto-Scrolling Carousel -->
+	<section class="section vehicles">
+		<div class="container">
+		  <div class="section-title">
+			<h2>Your Vehicles</h2>
+			<p>Manage your vehicles and track their performance on the platform.</p>
+		  </div>
+		  
+		  <div class="row">
+			<div class="col-12">
+			  {% if cars %}
+			  <!-- Swiper Carousel -->
+			  <div class="swiper vehicle-swiper">
+				<div class="swiper-wrapper">
+				  {% for car in cars %}
+				  <div class="swiper-slide">
+					<div class="vehicle-card">
+					  <div class="vehicle-image" style="background-image: url('{{ car.cimage.url }}');"></div>
+					  <div class="vehicle-details">
+						<h3 class="vehicle-title">{{ car.cname }}</h3>
+						<div class="vehicle-meta">
+						  <span class="vehicle-category">{{ car.sfuel }}</span>
+						  <span class="vehicle-price">₹{{ car.dprice }}<span>/day revenue</span></span>
+						</div>
+					  </div>
+					</div>
+				  </div>
+				  {% endfor %}
+				</div>
+				
+				<!-- Add pagination -->
+				<div class="swiper-pagination"></div>
+				
+				<!-- Add navigation buttons -->
+				<div class="swiper-button-next"></div>
+				<div class="swiper-button-prev"></div>
+			  </div>
+			  {% else %}
+			  <div class="empty-vehicles">
+				<p>You haven't added any vehicles yet. Register your first vehicle to start earning!</p>
+				<a href="#" class="btn btn-primary mt-3">Add Vehicle</a>
+			  </div>
+			  {% endif %}
+			</div>
+		  </div>
+		</div>
+	</section>
+
+    <section class="ftco-section ftco-about">
+			<div class="container">
+				<div class="row no-gutters">
+					<div class="col-md-6 p-md-5 img img-2 d-flex justify-content-center align-items-center" style="background-image: url({% static 'images/intpic.jpg' %});">
+					</div>
+					<div class="col-md-6 wrap-about ftco-animate">
+	          <div class="heading-section heading-section-white pl-md-5">
+	          	<span class="subheading">Join Our Network</span>
+	            <h2 class="mb-4">Partner with TurboHire</h2>
+
+	            <p>At TurboHire, we connect vehicle owners like you with qualified renters seeking reliable transportation. Your underutilized car can become a steady source of income with minimal effort on your part. Our comprehensive insurance coverage, secure payment system, and thorough renter verification process ensure your vehicle is in good hands.</p>
+	            <p>Join thousands of successful car owners who have transformed their parked assets into profit-generating ventures. Our platform provides the tools, visibility, and support you need to maximize your vehicle's earning potential while maintaining complete control over who rents your car and when it's available.</p>
+	            <p><a href="#" class="btn btn-primary py-3 px-4">Become a Partner</a></p>
+	          </div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Benefits Section -->
+		<section class="section">
+			<div class="container">
+			  <div class="section-title">
+				<h2>Why Partner With Us</h2>
+				<p>Enjoy these exclusive benefits when you list your vehicle on our platform.</p>
+			  </div>
+			  
+			  <div class="benefits-grid">
+				<div class="benefit-card">
+				  <div class="benefit-icon">
+					<i class="fas fa-shield-alt"></i>
+				  </div>
+				  <h3 class="feature-title">Comprehensive Insurance</h3>
+				  <p class="feature-description">Rest easy with our $1M insurance policy covering your vehicle during every rental. Our protection includes damage, theft, and liability coverage.</p>
+				</div>
+				
+				<div class="benefit-card">
+				  <div class="benefit-icon">
+					<i class="fas fa-user-check"></i>
+				  </div>
+				  <h3 class="feature-title">Verified Renters</h3>
+				  <p class="feature-description">Every renter undergoes thorough background and driving history checks. Our multi-point verification system ensures only qualified drivers access your vehicle.</p>
+				</div>
+				
+				<div class="benefit-card">
+				  <div class="benefit-icon">
+					<i class="fas fa-money-bill-wave"></i>
+				  </div>
+				  <h3 class="feature-title">Fast Payments</h3>
+				  <p class="feature-description">Receive payments directly to your bank account within 48 hours of each completed rental. Our transparent fee structure means no surprises.</p>
+				</div>
+				
+				<div class="benefit-card">
+				  <div class="benefit-icon">
+					<i class="fas fa-headset"></i>
+				  </div>
+				  <h3 class="feature-title">24/7 Support</h3>
+				  <p class="feature-description">Our dedicated lessor support team is available around the clock to address any concerns. From booking issues to emergency assistance, we're here to help.</p>
+				</div>
+			  </div>
+			</div>
+		  </section>
+
+		<section class="ftco-section ftco-intro" style="background-image: url({% static 'images/carimage.jpg' %});">
+			<div class="overlay"></div>
+			<div class="container">
+				<div class="row justify-content-end">
+					<div class="col-md-6 heading-section heading-section-white ftco-animate">
+            <h2 class="mb-3">Ready to transform your car into a revenue stream? Join thousands of successful owners today.</h2>
+            <a href="{% url 'add'%}" class="btn btn-primary btn-lg">Register Your Vehicle</a>
+          </div>
+				</div>
+			</div>
+		</section>
+
+    <section class="ftco-section">
+      <div class="container">
+        <div class="row justify-content-center mb-5">
+          <div class="col-md-7 heading-section text-center ftco-animate">
+          	<span class="subheading">Resources</span>
+            <h2>Lessor Guides</h2>
+          </div>
+        </div>
+        <div class="row d-flex">
+          <div class="col-md-4 d-flex ftco-animate">
+          	<div class="blog-entry justify-content-end">
+              <a href="blog-single.html" class="block-20" style="background-image: url('{% static 'images/image_1.jpg' %}');">
+              </a>
+              <div class="text pt-4">
+              	<div class="meta mb-3">
+                  <div><a href="#">Mar. 15, 2025</a></div>
+                  <div><a href="#">Admin</a></div>
+                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 24</a></div>
+                </div>
+                <h3 class="heading mt-2"><a href="#">How to Maximize Your Car's Earning Potential</a></h3>
+                <p><a href="#" class="btn btn-primary">Read more</a></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 d-flex ftco-animate">
+          	<div class="blog-entry justify-content-end">
+              <a href="blog-single.html" class="block-20" style="background-image: url('{% static 'images/image_2.jpg' %}');">
+              </a>
+              <div class="text pt-4">
+              	<div class="meta mb-3">
+                  <div><a href="#">Feb. 18, 2025</a></div>
+                  <div><a href="#">Admin</a></div>
+                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 19</a></div>
+                </div>
+                <h3 class="heading mt-2"><a href="#">Tax Benefits for Vehicle Owners in the Sharing Economy</a></h3>
+                <p><a href="#" class="btn btn-primary">Read more</a></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 d-flex ftco-animate">
+          	<div class="blog-entry">
+              <a href="blog-single.html" class="block-20" style="background-image: url('{% static 'images/image_3.jpg' %}');">
+              </a>
+              <div class="text pt-4">
+              	<div class="meta mb-3">
+                  <div><a href="#">Jan. 10, 2025</a></div>
+                  <div><a href="#">Admin</a></div>
+                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 31</a></div>
+                </div>
+                <h3 class="heading mt-2"><a href="#">Maintaining Your Vehicle for Better Reviews and Higher Rates</a></h3>
+                <p><a href="#" class="btn btn-primary">Read more</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>	
+
+    <!-- Stats Section -->
+  <section class="section stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-number">8</div>
+          <div class="stat-label">Years in Business</div>
+        </div>
+        
+        <div class="stat-item">
+          <div class="stat-number">3,450+</div>
+          <div class="stat-label">Active Car Owners</div>
+        </div>
+        
+        <div class="stat-item">
+          <div class="stat-number">45,000+</div>
+          <div class="stat-label">Successful Rentals</div>
+        </div>
+        
+        <div class="stat-item">
+          <div class="stat-number">67</div>
+          <div class="stat-label">Cities Covered</div>
+        </div>
+      </div>
+    </div>
+  </section>	
+
+<!-- Add Swiper JS script at the end of the body -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Swiper
+    const swiper = new Swiper('.vehicle-swiper', {
+      // Enable automatic scrolling from right to left
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+      },
+      
+      // Configure the number of slides to show based on screen size
+      slidesPerView: 1,
+      spaceBetween: 20,
+      
+      // Enable infinite loop
+      loop: true,
+      
+      // Enable navigation buttons
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      
+      // Enable pagination
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      
+      // Responsive breakpoints
+      breakpoints: {
+        // When window width is >= 640px
+        640: {
+          slidesPerView: 2,
+          spaceBetween: 20,
+        },
+        // When window width is >= 992px
+        992: {
+          slidesPerView: 3,
+          spaceBetween: 30,
+        }
+      }
+    });
+  });
+</script>
+
+  </body>
+</html>
+{% endblock %}

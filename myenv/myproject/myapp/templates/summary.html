@@ -1,0 +1,181 @@
+{% extends 'cheader.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+
+<body>
+
+    <video autoplay muted loop id="bg-video">
+        <source src="{% static 'videos/innvid.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="card">
+        <h2 class="title">Booking Summary</h2>
+
+        <div class="summary-container">
+            <div class="summary-row">
+                <h5>Car Name:</h5>
+                <p>{{ car.cname }}</p>
+            </div>
+            <div class="summary-row">
+                <h5>Pick-up Location:</h5>
+                <p>{{ booking.pickup_address }}</p>
+            </div>
+            <div class="summary-row">
+                <h5>Drop-off Location:</h5>
+                <p>{{ booking.drop_address }}</p>
+            </div>
+            <div class="summary-row">
+                <h5>Pick-Up Time:</h5>
+                <p>{{ booking.pick_time }}</p>
+            </div>
+            <div class="summary-row">
+                <h5>Total Days:</h5>
+                <p>{{ booking.total_days }}</p>
+            </div>
+            <div class="summary-row">
+                <h5>Total Price:</h5>
+                <p>₹{{ booking.total_amount }}</p>
+            </div>
+        </div>
+
+        <div class="button-container">
+            <button class="proceed-button" id="rzp-button1">Proceed to Payment</button>
+        </div>
+    </div>
+
+    <script>
+        var options = {
+            "key": "rzp_test_3iCOPLbchUyIwQ", // Enter the Key ID generated from the Dashboard
+            "amount": "{{ context.payment.amount }}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "Carbook",
+            "description": "Test Payment", // This is a sample Order ID. Pass the id obtained in the response of Step 1
+            "handler": function (response) {
+                console.log(response);
+                window.location.href = `http://127.0.0.1:8000/success?razorpay_payment_id=${response.razorpay_payment_id}`;
+            },
+            "theme": {
+                "color": "#94CA21"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.on('payment.failed', function (response) {
+            alert(response.error.code);
+            alert(response.error.description);
+            alert(response.error.source);
+            alert(response.error.step);
+            alert(response.error.reason);
+            alert(response.error.metadata.order_id);
+            alert(response.error.metadata.payment_id);
+        });
+        document.getElementById('rzp-button1').onclick = function (e) {
+            rzp1.open();
+            e.preventDefault();
+        }
+    </script>
+<style>
+    body {
+        background: #333333;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: sans-serif;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    #bg-video {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+    }
+    
+    .card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 12px;
+        padding: 30px;
+        max-width: 800px;
+        width: 90%;
+        box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        text-align: center;
+    }
+    
+    .summary-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .summary-row h5 {
+        flex: 1;
+        text-align: left;
+        font-size: 1rem;
+        font-weight: bold;
+        color: #333;
+    }
+    
+    .summary-row p {
+        flex: 1;
+        text-align: right;
+        font-size: 1rem;
+        color: #555;
+    }
+    .title{
+        margin-bottom: 5vh;
+        font-weight: bold;
+        font-size: 1.5rem;
+        color: #333;
+    }
+    .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    
+    .proceed-button {
+        background-color: #00b33c;
+        color: white;
+        font-size: 1rem;
+        padding: 12px 25px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+    }
+    
+    .proceed-button:hover {
+        background-color: #00982e;
+    }
+    
+    @media(max-width: 767px) {
+        .card {
+            max-width: 90%;
+        }
+        .summary-row h5, .summary-row p {
+            font-size: 0.9rem;
+        }
+    }
+    </style>
+</body>
+</html>
+
+{% endblock %}

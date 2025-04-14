@@ -1,0 +1,431 @@
+{% extends 'cheader.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        #bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+        }
+        
+        /* Video Overlay */
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+        }
+        
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.2;
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        .bg-circle:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: -150px;
+            left: -100px;
+            background: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+            animation-delay: 0s;
+        }
+        
+        .bg-circle:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            bottom: -200px;
+            right: -100px;
+            background: linear-gradient(to right, #fa709a 0%, #fee140 100%);
+            animation-delay: -5s;
+        }
+        
+        .bg-circle:nth-child(3) {
+            width: 250px;
+            height: 250px;
+            top: 50%;
+            left: 50%;
+            background: linear-gradient(to right, #667eea 0%, #764ba2 100%);
+            animation-delay: -10s;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+            }
+            25% {
+                transform: translateY(-30px) translateX(20px);
+            }
+            50% {
+                transform: translateY(0) translateX(40px);
+            }
+            75% {
+                transform: translateY(30px) translateX(20px);
+            }
+        }
+        
+        .main-content {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .thank-you-container {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+            text-align: center;
+            width: 100%;
+            max-width: 550px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .thank-you-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(31, 38, 135, 0.2);
+        }
+        
+        .icon {
+            width: 80px;
+            height: 80px;
+            background-color: #e6f7f0;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 24px;
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.2);
+            transition: transform 0.5s;
+        }
+        
+        .icon svg {
+            width: 40px;
+            height: 40px;
+            color: #10b981;
+        }
+        
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 16px;
+        }
+        
+        p {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            background: linear-gradient(to right, #3b82f6, #2563eb);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0.8;
+            animation: fall linear forwards;
+            z-index: 5;
+        }
+        
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        footer {
+            background-color: rgba(34, 34, 34, 0.9);
+            color: #f7f8fa;
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: #f7f8fa;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        .footer-links a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #3b82f6;
+            transition: width 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #3b82f6;
+        }
+        
+        .footer-links a:hover:after {
+            width: 100%;
+        }
+        
+        .copyright {
+            font-size: 14px;
+            color: #aaa;
+        }
+        
+        @media (max-width: 768px) {
+            .thank-you-container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 28px;
+            }
+            
+            p {
+                font-size: 16px;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .footer-links a {
+                margin: 8px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background video positioned correctly -->
+    <video autoplay muted loop id="bg-video">
+        <source src="{% static 'videos/innvid.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    
+    <!-- Added a video overlay to improve visibility of content -->
+    <div class="video-overlay"></div>
+    
+    <div class="bg-animation">
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+    </div>
+    
+    <div class="main-content" id="mainContent">
+        <div class="thank-you-container">
+            <div class="icon" id="checkIcon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+            </div>
+            <h1 id="thankYouText">Thank You!</h1>
+            <p>We appreciate your action. Our team will get in touch with you shortly.</p>
+            <a href="{% url 'index'%}" class="btn" id="homeButton">Return to Home</a>
+        </div>
+    </div>
+    
+    <script>
+        // Wait for DOM to load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animation for the check icon
+            const checkIcon = document.getElementById('checkIcon');
+            setTimeout(() => {
+                checkIcon.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    checkIcon.style.transform = 'scale(1)';
+                }, 300);
+            }, 300);
+            
+            // Typing effect for the thank you text
+            const thankYouText = document.getElementById('thankYouText');
+            const text = thankYouText.textContent;
+            thankYouText.textContent = '';
+            
+            let i = 0;
+            const typeWriter = () => {
+                if (i < text.length) {
+                    thankYouText.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 100);
+                } else {
+                    createConfetti();
+                }
+            };
+            
+            setTimeout(typeWriter, 600);
+            
+            // Confetti effect
+            function createConfetti() {
+                const mainContent = document.getElementById('mainContent');
+                const colors = ['#ff4136', '#0074d9', '#ffdc00', '#2ecc40', '#ff851b', '#f012be', '#7fdbff'];
+                
+                for (let i = 0; i < 50; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    
+                    // Random position, color, size, and animation duration
+                    const size = Math.floor(Math.random() * 12) + 6;
+                    const left = Math.floor(Math.random() * 100);
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    const duration = Math.floor(Math.random() * 6) + 3;
+                    
+                    confetti.style.left = left + '%';
+                    confetti.style.backgroundColor = color;
+                    confetti.style.width = size + 'px';
+                    confetti.style.height = size + 'px';
+                    confetti.style.animationDuration = duration + 's';
+                    
+                    mainContent.appendChild(confetti);
+                    
+                    // Remove confetti after animation
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, duration * 1000);
+                }
+            }
+            
+            // Button hover effect
+            const homeButton = document.getElementById('homeButton');
+            homeButton.addEventListener('mouseover', () => {
+                homeButton.style.transform = 'translateY(-2px)';
+            });
+            
+            homeButton.addEventListener('mouseout', () => {
+                homeButton.style.transform = 'translateY(0)';
+            });
+            
+            // Add mousemove parallax effect for background circles
+            document.addEventListener('mousemove', (e) => {
+                const circles = document.querySelectorAll('.bg-circle');
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                
+                circles.forEach((circle, index) => {
+                    const factor = (index + 1) * 10;
+                    circle.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+{% endblock %}
